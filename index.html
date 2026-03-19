@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seznam.cz Shopify App — Wireframes v4 — Polaris</title>
+  <title>Seznam.cz Shopify App — Wireframes v5 — Polaris</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
@@ -118,16 +118,28 @@ const Button = ({ variant = 'secondary', size = 'default', onClick, children, cl
   );
 };
 
-const Banner = ({ tone = 'info', children }) => {
+const Banner = ({ tone = 'info', heading, children }) => {
   const tones = {
-    warning: 'border-l-[#B98900] bg-p-warning-bg',
-    critical: 'border-l-p-critical-text bg-p-critical-bg',
-    success: 'border-l-p-success-text bg-p-success-bg',
-    info: 'border-l-p-focus bg-p-info-bg',
+    warning: 'bg-p-warning-bg',
+    critical: 'bg-p-critical-bg',
+    success: 'bg-p-success-bg',
+    info: 'bg-p-info-bg',
+  };
+  const icons = {
+    warning: <svg className="w-5 h-5 text-p-warning-text flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>,
+    critical: <svg className="w-5 h-5 text-p-critical-text flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>,
+    success: <svg className="w-5 h-5 text-p-success-text flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>,
+    info: <svg className="w-5 h-5 text-p-interactive flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
   };
   return (
-    <div className={`rounded-p-card border-l-[3px] p-4 ${tones[tone] || tones.info}`}>
-      {children}
+    <div className={`rounded-p-card p-4 ${tones[tone] || tones.info}`}>
+      <div className="flex gap-3">
+        {icons[tone]}
+        <div className="flex-1">
+          {heading && <div className="text-p-heading text-p-text mb-1">{heading}</div>}
+          {children}
+        </div>
+      </div>
     </div>
   );
 };
@@ -153,22 +165,28 @@ const Toggle = ({ checked = false, size = 'default' }) => {
   );
 };
 
-const TextField = ({ placeholder, value, icon }) => (
-  <div className="relative">
-    {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-p-text-disabled">{icon}</div>}
-    <input
-      type="text"
-      placeholder={placeholder}
-      defaultValue={value}
-      className={`w-full border border-p-text-disabled rounded-p-input py-2 text-p-base text-p-text placeholder:text-p-text-disabled focus:border-p-focus focus:ring-1 focus:ring-p-focus focus:outline-none ${icon ? 'pl-9 pr-3' : 'px-3'}`}
-    />
+const TextField = ({ placeholder, value, icon, label }) => (
+  <div>
+    {label && <label className="block text-p-base text-p-text font-[550] mb-1">{label}</label>}
+    <div className="relative">
+      {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-p-text-disabled">{icon}</div>}
+      <input
+        type="text"
+        placeholder={placeholder}
+        defaultValue={value}
+        className={`w-full border border-p-text-disabled rounded-p-input py-2 text-p-base text-p-text placeholder:text-p-text-disabled focus:border-p-focus focus:ring-1 focus:ring-p-focus focus:outline-none ${icon ? 'pl-9 pr-3' : 'px-3'}`}
+      />
+    </div>
   </div>
 );
 
-const Select = ({ options, className = '' }) => (
-  <select className={`border border-p-text-disabled rounded-p-input px-3 py-2 text-p-base text-p-text focus:border-p-focus focus:ring-1 focus:ring-p-focus focus:outline-none bg-white ${className}`}>
-    {options.map((opt, i) => <option key={i} value={opt.value || opt}>{opt.label || opt}</option>)}
-  </select>
+const Select = ({ options, label, className = '' }) => (
+  <div>
+    {label && <label className="block text-p-base text-p-text font-[550] mb-1">{label}</label>}
+    <select className={`border border-p-text-disabled rounded-p-input px-3 py-2 text-p-base text-p-text focus:border-p-focus focus:ring-1 focus:ring-p-focus focus:outline-none bg-white ${className}`}>
+      {options.map((opt, i) => <option key={i} value={opt.value || opt}>{opt.label || opt}</option>)}
+    </select>
+  </div>
 );
 
 const HelpFooter = () => (
@@ -224,7 +242,7 @@ const SeznamAppWireframes = () => {
     <div className="min-h-screen bg-p-bg font-polaris">
       {/* Annotation banner */}
       <div className="bg-p-info-bg border-b border-p-border px-4 py-2 text-center">
-        <span className="text-p-base text-p-interactive">Wireframes v4 — Polaris App Home design system · Inter font · s-page/s-section/s-table patterns</span>
+        <span className="text-p-base text-p-interactive">Wireframes v5 — Polaris App Home · Sidebar = Shopify admin chrome (not app code) · Sub-nav = App Bridge s-app-nav · CSB = App Bridge ui-save-bar · All components = real Polaris web components in implementation</span>
       </div>
 
       {/* Screen Selector */}
@@ -255,7 +273,7 @@ const SeznamAppWireframes = () => {
 
       {/* Sidebar + Content Layout */}
       <div className="flex">
-        {/* Simulated Shopify Admin Sidebar */}
+        {/* Simulated Shopify Admin Sidebar — this is admin chrome, NOT part of app code. Sub-nav uses App Bridge s-app-nav / NavMenu */}
         <div className="hidden md:block w-[210px] bg-p-sidebar min-h-screen p-3 text-p-sidebar-text text-p-base space-y-0.5 flex-shrink-0">
           <div className="text-p-text-disabled uppercase text-[10px] font-[650] tracking-wider mb-2 mt-2 px-2">Sales channels</div>
 
@@ -642,7 +660,7 @@ const OverviewScreen = ({ onNavigate }) => (
 
     {/* Product Status Section */}
     <Section title="Stav produktu na Zbozi.cz" action={<Button variant="plain" onClick={() => onNavigate('products')}>Spravovat produkty</Button>}>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="text-center p-3 bg-p-bg rounded-p-btn">
           <div className="text-xl font-[650] text-p-text">1 284</div>
           <div className="text-p-base text-p-text-secondary">Publikováno</div>
@@ -672,17 +690,12 @@ const OverviewScreen = ({ onNavigate }) => (
 
       {/* ResourceFeedback warning */}
       <div className="mt-3">
-        <Banner tone="warning">
-          <div className="flex items-start gap-2">
-            <WarningIcon />
-            <div>
-              <p className="text-p-base text-p-text">
-                <strong className="font-[650]">42 produktu</strong> nemá namapovanou kategorii Zbozi.cz.{' '}
-                <strong className="font-[650]">86 produktu</strong> má chybející EAN nebo výrobce.
-              </p>
-              <button onClick={() => onNavigate('products')} className="text-p-base text-p-interactive hover:underline mt-1">Zobrazit a opravit</button>
-            </div>
-          </div>
+        <Banner tone="warning" heading="Produkty vyžadují pozornost">
+          <p className="text-p-base text-p-text">
+            <strong className="font-[650]">42 produktu</strong> nemá namapovanou kategorii Zbozi.cz.{' '}
+            <strong className="font-[650]">86 produktu</strong> má chybející EAN nebo výrobce.
+          </p>
+          <button onClick={() => onNavigate('products')} className="text-p-base text-p-interactive hover:underline mt-1">Zobrazit a opravit</button>
         </Banner>
       </div>
 
@@ -744,7 +757,7 @@ const OverviewScreen = ({ onNavigate }) => (
           <h3 className="text-p-heading text-p-text">Konverze (posledních 7 dní)</h3>
           <Select options={['7 dní', '30 dní']} className="py-1 px-2 text-p-badge" />
         </div>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="text-center p-2 bg-p-bg rounded-p-btn">
             <div className="text-lg font-[650] text-p-text">847</div>
             <div className="text-p-badge text-p-text-secondary">Návštevy</div>
@@ -857,16 +870,17 @@ const ProductsScreen = ({ onNavigate }) => (
       </div>
 
       {/* Product Table — actual <table> with s-table styling */}
-      <table className="w-full">
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-[600px]">
         <thead>
           <tr className="bg-p-bg">
             <th className="text-left px-4 py-3 w-10">
               <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
             </th>
-            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">Produkt</th>
-            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">SKU / EAN</th>
-            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">Kategorie</th>
-            <th className="text-right px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">Stav</th>
+            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550]">Produkt</th>
+            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550]">SKU / EAN</th>
+            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550]">Kategorie</th>
+            <th className="text-right px-4 py-3 text-p-th text-p-text-secondary font-[550]">Stav</th>
           </tr>
         </thead>
         <tbody>
@@ -964,17 +978,13 @@ const ProductsScreen = ({ onNavigate }) => (
           </tr>
         </tbody>
       </table>
+      </div>
 
       {/* Pagination */}
-      <div className="px-4 py-3 border-t border-p-border-subdued flex items-center justify-between text-p-base text-p-text-secondary">
-        <span>Zobrazeno 1-50 z 1 284 produktu</span>
-        <div className="flex gap-1">
-          <Button variant="secondary" size="slim">&larr;</Button>
-          <Button variant="primary" size="slim">1</Button>
-          <Button variant="secondary" size="slim">2</Button>
-          <Button variant="secondary" size="slim">3</Button>
-          <Button variant="secondary" size="slim">&rarr;</Button>
-        </div>
+      <div className="px-4 py-3 border-t border-p-border-subdued flex items-center justify-center text-p-base text-p-text-secondary gap-4">
+        <Button variant="secondary" size="slim">&larr; Předchozí</Button>
+        <span>1–50 z 1 284</span>
+        <Button variant="secondary" size="slim">Další &rarr;</Button>
       </div>
     </div>
 
@@ -1029,12 +1039,12 @@ const SettingsScreen = ({ onNavigate }) => {
 
     <h1 className="text-p-heading-lg text-p-text">Nastavení</h1>
 
-    {/* Contextual Save Bar — CSB */}
+    {/* Contextual Save Bar — wireframe representation of App Bridge ui-save-bar (rendered by Shopify admin, not app code) */}
     <div className="sticky top-[52px] z-40 bg-p-sidebar text-white p-3 rounded-p-card flex items-center justify-between shadow-lg">
       <span className="text-p-base text-white font-[450]">Neuložené zmeny</span>
       <div className="flex gap-2">
         <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-transparent border border-[#505050] text-white hover:bg-[#333] transition-colors">Zahodit</button>
-        <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-p-success-text text-white hover:bg-[#006e52] transition-colors">Uložit</button>
+        <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-white text-p-text hover:bg-p-bg transition-colors">Uložit</button>
       </div>
     </div>
 
@@ -1134,7 +1144,7 @@ const SettingsScreen = ({ onNavigate }) => {
               <div className="flex items-center gap-2">
                 <input type="checkbox" checked={event.on} className="w-3.5 h-3.5 rounded border-p-text-disabled accent-p-btn-primary" readOnly />
                 <span className="text-p-base text-p-text">{event.label}</span>
-                {event.priority === 'Critical' && <Badge tone="critical">Critical</Badge>}
+                {event.priority === 'Critical' && <Badge tone="warning">Povinné</Badge>}
                 {event.priority === 'High' && <Badge tone="warning">High</Badge>}
               </div>
               <code className="text-p-badge text-p-text-disabled group-hover:text-p-text-secondary transition-colors">{event.name}</code>
