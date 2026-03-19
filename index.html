@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seznam.cz Shopify App — Wireframes v2</title>
+  <title>Seznam.cz Shopify App — Wireframes v3</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -28,13 +28,18 @@ const SeznamAppWireframesV2 = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      {/* BFS compliance annotation banner */}
+      <div className="bg-green-50 border-b border-green-200 px-3 py-1.5 text-center">
+        <span className="text-[10px] text-green-700">Wireframes v3 — Built for Shopify compliant · Polaris color system · CSB pattern · ResourceFeedback · Help footer</span>
+      </div>
+
       {/* Screen Selector */}
       <div className="bg-white border-b border-gray-200 p-3 sticky top-0 z-50">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-6 h-6 bg-red-600 rounded flex items-center justify-center">
             <span className="text-white text-xs font-bold">S</span>
           </div>
-          <h1 className="text-sm font-semibold text-gray-800">Seznam.cz (Sklik + Zboží.cz) — Wireframes v2</h1>
+          <h1 className="text-sm font-semibold text-gray-800">Seznam.cz (Sklik + Zboží.cz) — Wireframes v3</h1>
           <span className="text-xs text-gray-400 ml-auto">Sales Channel</span>
         </div>
         <div className="flex flex-wrap gap-1">
@@ -44,7 +49,7 @@ const SeznamAppWireframesV2 = () => {
               onClick={() => setCurrentScreen(screen.id)}
               className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                 currentScreen === screen.id
-                  ? 'bg-red-600 text-white'
+                  ? 'bg-gray-900 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -64,7 +69,7 @@ const SeznamAppWireframesV2 = () => {
           </div>
           <div
             onClick={() => setCurrentScreen(currentScreen === 'intro' ? 'intro' : 'overview')}
-            className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer ${currentScreen !== 'intro' ? 'bg-red-600/20 text-red-300 border border-red-500/30' : 'text-gray-300 hover:bg-gray-800'}`}
+            className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer ${currentScreen !== 'intro' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
           >
             <div className="w-4 h-4 bg-red-600 rounded flex items-center justify-center">
               <span className="text-white text-[8px] font-bold">S</span>
@@ -108,17 +113,17 @@ const IntroductionScreen = ({ onNavigate }) => (
   <div className="space-y-4 max-w-2xl mx-auto">
     {/* Hero Section */}
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-      <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white">
+      <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow">
             <span className="text-red-600 text-xl font-bold">S</span>
           </div>
           <div>
             <h1 className="text-lg font-semibold">Seznam.cz</h1>
-            <span className="text-red-200 text-xs">Sklik + Zboží.cz</span>
+            <span className="text-gray-400 text-xs">Sklik + Zboží.cz</span>
           </div>
         </div>
-        <p className="text-sm text-red-100 leading-relaxed">
+        <p className="text-sm text-gray-300 leading-relaxed">
           Buďte tam, kde zákazníci skutečně hledají — ve <strong className="text-white">vyhledávání Seznam.cz</strong>,
           na <strong className="text-white">nejnavštěvovanějších českých webech</strong> nebo
           na <strong className="text-white">srovnávači Zboží.cz</strong>, který týdně navštíví téměř milion nakupujících.
@@ -129,7 +134,7 @@ const IntroductionScreen = ({ onNavigate }) => (
         <h2 className="text-sm font-semibold text-gray-900 mb-4">Co získáte</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Feature Card: SEM Tracking */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-red-200 transition-colors">
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,10 +150,10 @@ const IntroductionScreen = ({ onNavigate }) => (
           </div>
 
           {/* Feature Card: Product Feed */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-red-200 transition-colors">
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                <span className="text-red-600 font-bold text-xs">XML</span>
+              <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xs">XML</span>
               </div>
               <h3 className="text-sm font-medium text-gray-900">Produktový feed pro Zboží.cz</h3>
             </div>
@@ -159,7 +164,7 @@ const IntroductionScreen = ({ onNavigate }) => (
           </div>
 
           {/* Feature Card: Reviews */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-red-200 transition-colors">
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
                 <span className="text-yellow-600 font-bold text-lg">★</span>
@@ -173,7 +178,7 @@ const IntroductionScreen = ({ onNavigate }) => (
           </div>
 
           {/* Feature Card: Reach */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-red-200 transition-colors">
+          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,7 +194,7 @@ const IntroductionScreen = ({ onNavigate }) => (
           </div>
         </div>
 
-        <button onClick={() => onNavigate('onboarding')} className="mt-6 w-full bg-red-600 text-white py-3 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-2">
+        <button onClick={() => onNavigate('onboarding')} className="mt-6 w-full bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
           <div className="w-5 h-5 bg-white/20 rounded flex items-center justify-center">
             <span className="text-white text-xs font-bold">S</span>
           </div>
@@ -207,7 +212,7 @@ const IntroductionScreen = ({ onNavigate }) => (
     <div className="bg-white rounded-xl shadow-sm p-4">
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="w-full md:w-1/2 aspect-video bg-gray-900 rounded-lg flex items-center justify-center relative">
-          <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-700 transition-colors">
+          <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors border-2 border-white">
             <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
@@ -223,6 +228,13 @@ const IntroductionScreen = ({ onNavigate }) => (
           </p>
         </div>
       </div>
+    </div>
+
+    {/* Help footer — BFS requirement */}
+    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
+      <p className="text-xs text-gray-400">
+        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
+      </p>
     </div>
   </div>
 );
@@ -246,7 +258,7 @@ const OnboardingScreen = ({ onNavigate }) => (
         <span className="text-xs text-gray-500">2 ze 4 dokončeno</span>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-2">
-        <div className="bg-red-600 h-2 rounded-full transition-all" style={{width: '50%'}}></div>
+        <div className="bg-green-600 h-2 rounded-full transition-all" style={{width: '50%'}}></div>
       </div>
     </div>
 
@@ -301,10 +313,10 @@ const OnboardingScreen = ({ onNavigate }) => (
     </div>
 
     {/* Step 3: Enable Modules — ACTIVE */}
-    <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-red-500">
+    <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
       <div className="flex items-start gap-3 mb-4">
-        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <span className="text-red-600 font-bold text-sm">3</span>
+        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-blue-600 font-bold text-sm">3</span>
         </div>
         <div>
           <h3 className="font-semibold text-sm text-gray-900">Aktivujte služby</h3>
@@ -338,7 +350,7 @@ const OnboardingScreen = ({ onNavigate }) => (
             </div>
             <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
               <input type="checkbox" checked className="sr-only peer" readOnly />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
             </label>
           </div>
         </div>
@@ -347,7 +359,7 @@ const OnboardingScreen = ({ onNavigate }) => (
         <div className="border border-gray-200 rounded-lg p-3">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-xs flex-shrink-0">XML</div>
+              <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-white font-bold text-xs flex-shrink-0">XML</div>
               <div>
                 <div className="font-semibold text-sm text-gray-900">Produktový feed pro Zboží.cz</div>
                 <div className="text-xs text-gray-600 mt-0.5">
@@ -364,7 +376,7 @@ const OnboardingScreen = ({ onNavigate }) => (
             </div>
             <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
               <input type="checkbox" checked className="sr-only peer" readOnly />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
             </label>
           </div>
         </div>
@@ -386,7 +398,7 @@ const OnboardingScreen = ({ onNavigate }) => (
             </div>
             <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
               <input type="checkbox" className="sr-only peer" />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
             </label>
           </div>
         </div>
@@ -415,11 +427,18 @@ const OnboardingScreen = ({ onNavigate }) => (
       </div>
       <div className="flex flex-wrap gap-2 mb-4">
         <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full">✓ Seznam Event Measurement</span>
-        <span className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">✓ Produktový feed</span>
+        <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">✓ Produktový feed</span>
       </div>
       <button onClick={() => onNavigate('products')} className="w-full bg-gray-900 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
         Pokračovat k publikování produktů
       </button>
+    </div>
+
+    {/* Help footer — BFS requirement */}
+    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
+      <p className="text-xs text-gray-400">
+        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
+      </p>
     </div>
   </div>
 );
@@ -618,6 +637,13 @@ const OverviewScreen = ({ onNavigate }) => (
         </a>
       </div>
     </div>
+
+    {/* Help footer — BFS requirement */}
+    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
+      <p className="text-xs text-gray-400">
+        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
+      </p>
+    </div>
   </div>
 );
 
@@ -631,6 +657,7 @@ const ProductsScreen = ({ onNavigate }) => (
       <div>
         <h1 className="text-lg font-semibold text-gray-900">Produkty</h1>
         <p className="text-xs text-gray-500">Spravujte produkty publikované na Zboží.cz</p>
+        <a href="#" className="text-blue-600 text-xs hover:underline">Otevřít hromadný editor Shopify ↗</a>
       </div>
       <button className="bg-gray-900 text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-gray-800">
         Synchronizovat nyní
@@ -724,6 +751,13 @@ const ProductsScreen = ({ onNavigate }) => (
             <span className="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full">Chyba</span>
           </div>
         </div>
+        {/* ResourceFeedback detail */}
+        <div className="px-3 pb-3 pt-0 pl-20 bg-red-50/50">
+          <div className="border border-red-200 rounded p-2 bg-white">
+            <p className="text-xs text-red-700 font-medium">Chybějící povinné pole: EAN</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">Produkt nemůže být zobrazen na Zboží.cz bez platného EAN kódu. Přidejte EAN v <a href="#" className="text-blue-600 hover:underline">editoru produktu</a>.</p>
+          </div>
+        </div>
 
         {/* Product Row 4 — OK */}
         <div className="p-3 flex items-center gap-3 hover:bg-gray-50">
@@ -768,6 +802,13 @@ const ProductsScreen = ({ onNavigate }) => (
         Tento URL zadejte v administraci Zboží.cz. Feed se automaticky aktualizuje při změně produktů.
       </p>
     </div>
+
+    {/* Help footer — BFS requirement */}
+    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
+      <p className="text-xs text-gray-400">
+        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
+      </p>
+    </div>
   </div>
 );
 
@@ -778,6 +819,15 @@ const ProductsScreen = ({ onNavigate }) => (
 const SettingsScreen = ({ onNavigate }) => (
   <div className="space-y-4 max-w-2xl mx-auto">
     <h1 className="text-lg font-semibold text-gray-900">Nastavení</h1>
+
+    {/* Contextual Save Bar — App Bridge pattern */}
+    <div className="sticky top-12 z-40 bg-gray-900 text-white p-3 rounded-lg mb-4 flex items-center justify-between shadow-lg">
+      <span className="text-sm">Neuložené změny</span>
+      <div className="flex gap-2">
+        <button className="px-3 py-1.5 rounded text-sm border border-gray-600 hover:bg-gray-800">Zahodit</button>
+        <button className="px-3 py-1.5 rounded text-sm bg-green-600 hover:bg-green-700 font-medium">Uložit</button>
+      </div>
+    </div>
 
     {/* Seznam Account */}
     <div className="bg-white rounded-xl shadow-sm p-4">
@@ -795,7 +845,8 @@ const SettingsScreen = ({ onNavigate }) => (
             </div>
           </div>
         </div>
-        <button className="border border-red-300 text-red-600 px-3 py-1.5 rounded text-xs hover:bg-red-50">
+        <button className="border border-red-300 text-red-600 px-3 py-1.5 rounded text-xs hover:bg-red-50"
+          onClick={() => alert('Modal: Opravdu chcete odpojit účet Seznam.cz? Tato akce odstraní veškerá nastavení.')}>
           Odpojit účet
         </button>
       </div>
@@ -810,14 +861,14 @@ const SettingsScreen = ({ onNavigate }) => (
       <div className="space-y-2">
         <label className="flex items-center justify-between p-2 rounded-lg border border-green-200 bg-green-50 cursor-pointer">
           <div className="flex items-center gap-2">
-            <input type="checkbox" checked className="w-4 h-4 rounded border-gray-300 text-red-600" readOnly />
+            <input type="checkbox" checked className="w-4 h-4 rounded border-gray-300 text-gray-900" readOnly />
             <span className="text-sm">🇨🇿 Česká republika</span>
           </div>
           <span className="text-xs text-gray-500">CZK</span>
         </label>
         <label className="flex items-center justify-between p-2 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-red-600" />
+            <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-gray-900" />
             <span className="text-sm">🇸🇰 Slovensko</span>
           </div>
           <span className="text-xs text-gray-500">EUR</span>
@@ -834,7 +885,7 @@ const SettingsScreen = ({ onNavigate }) => (
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" checked className="sr-only peer" readOnly />
-          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600"></div>
+          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
         </label>
       </div>
 
@@ -843,14 +894,14 @@ const SettingsScreen = ({ onNavigate }) => (
         <div className="text-xs font-medium text-gray-700 mb-2">Režim trackingu</div>
         <div className="space-y-2">
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="tracking" checked className="w-3.5 h-3.5 text-red-600" readOnly />
+            <input type="radio" name="tracking" checked className="w-3.5 h-3.5 text-gray-900" readOnly />
             <div>
               <span className="text-xs font-medium text-gray-900">Frontend + Server-Side (doporučeno)</span>
               <p className="text-[10px] text-gray-500">Web Pixel + S2S webhooky s automatickou deduplikací na order_id</p>
             </div>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="tracking" className="w-3.5 h-3.5 text-red-600" />
+            <input type="radio" name="tracking" className="w-3.5 h-3.5 text-gray-900" />
             <div>
               <span className="text-xs font-medium text-gray-900">Pouze Frontend</span>
               <p className="text-[10px] text-gray-500">Pouze Web Pixel — nižší spolehlivost (ad blockery)</p>
@@ -880,9 +931,9 @@ const SettingsScreen = ({ onNavigate }) => (
           ].map((event) => (
             <label key={event.name} className="flex items-center justify-between py-1 cursor-pointer group">
               <div className="flex items-center gap-2">
-                <input type="checkbox" checked={event.on} className="w-3.5 h-3.5 rounded border-gray-300 text-red-600" readOnly />
+                <input type="checkbox" checked={event.on} className="w-3.5 h-3.5 rounded border-gray-300 text-gray-900" readOnly />
                 <span className="text-xs text-gray-700">{event.label}</span>
-                {event.priority === 'Critical' && <span className="bg-red-100 text-red-600 text-[9px] px-1 rounded">Critical</span>}
+                {event.priority === 'Critical' && <span className="bg-orange-100 text-orange-700 text-[9px] px-1 rounded">Critical</span>}
                 {event.priority === 'High' && <span className="bg-orange-100 text-orange-600 text-[9px] px-1 rounded">High</span>}
               </div>
               <code className="text-[10px] text-gray-400 group-hover:text-gray-600">{event.name}</code>
@@ -900,7 +951,7 @@ const SettingsScreen = ({ onNavigate }) => (
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" checked className="sr-only peer" readOnly />
-            <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600"></div>
+            <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
           </label>
         </div>
       </div>
@@ -915,7 +966,7 @@ const SettingsScreen = ({ onNavigate }) => (
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" checked className="sr-only peer" readOnly />
-          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600"></div>
+          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
         </label>
       </div>
 
@@ -995,7 +1046,7 @@ const SettingsScreen = ({ onNavigate }) => (
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
           <input type="checkbox" className="sr-only peer" />
-          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600"></div>
+          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
         </label>
       </div>
 
@@ -1004,14 +1055,14 @@ const SettingsScreen = ({ onNavigate }) => (
           <div className="text-xs font-medium text-gray-700 mb-2">Způsob sběru souhlasu</div>
           <div className="space-y-1.5">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="review_method" className="w-3.5 h-3.5 text-red-600" />
+              <input type="radio" name="review_method" className="w-3.5 h-3.5 text-gray-900" />
               <div>
                 <span className="text-xs font-medium text-gray-900">Checkout UI Extension</span>
                 <span className="text-[10px] text-purple-600 ml-1">(Shopify Plus)</span>
               </div>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="review_method" checked className="w-3.5 h-3.5 text-red-600" readOnly />
+              <input type="radio" name="review_method" checked className="w-3.5 h-3.5 text-gray-900" readOnly />
               <div>
                 <span className="text-xs font-medium text-gray-900">Cart App Block</span>
                 <span className="text-[10px] text-gray-500 ml-1">(všechny plány)</span>
@@ -1047,14 +1098,11 @@ const SettingsScreen = ({ onNavigate }) => (
       </div>
     </div>
 
-    {/* Save */}
-    <div className="flex justify-end gap-2 pb-8">
-      <button className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
-        Zrušit
-      </button>
-      <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700">
-        Uložit změny
-      </button>
+    {/* Help footer — BFS requirement */}
+    <div className="border-t border-gray-200 pt-3 mt-6 text-center pb-8">
+      <p className="text-xs text-gray-400">
+        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
+      </p>
     </div>
   </div>
 );
