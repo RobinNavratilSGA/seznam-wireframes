@@ -3,23 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seznam.cz Shopify App — Wireframes v3</title>
+  <title>Seznam.cz Shopify App — Wireframes v4 — Polaris</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            polaris: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            p: {
+              bg: '#f6f6f7',
+              surface: '#ffffff',
+              text: '#1a1a1a',
+              'text-secondary': '#616161',
+              'text-disabled': '#8c9196',
+              border: '#e1e3e5',
+              'border-subdued': '#ebebeb',
+              focus: '#005BD3',
+              interactive: '#005BD3',
+              'success-text': '#008060',
+              'success-surface': '#AFF4C6',
+              'success-bg': '#F1F8F5',
+              'warning-text': '#B98900',
+              'warning-surface': '#FFD79D',
+              'warning-bg': '#FFF5E8',
+              'critical-text': '#D72C0D',
+              'critical-surface': '#FED3D1',
+              'critical-bg': '#FFF4F4',
+              'info-surface': '#B4E1FA',
+              'info-bg': '#EBF5FA',
+              'btn-primary': '#1a1a1a',
+              'btn-primary-hover': '#333333',
+              'btn-secondary-border': '#ababaf',
+              'toggle-on': '#008060',
+              'toggle-off': '#8c9196',
+              'badge-neutral': '#e4e5e7',
+              sidebar: '#1a1a1a',
+              'sidebar-active': '#333333',
+              'sidebar-text': '#b5b5b5',
+            },
+          },
+          fontSize: {
+            'p-base': ['13px', { lineHeight: '20px', fontWeight: '450' }],
+            'p-heading': ['13px', { lineHeight: '20px', fontWeight: '650' }],
+            'p-heading-lg': ['16px', { lineHeight: '24px', fontWeight: '650' }],
+            'p-btn': ['13px', { lineHeight: '20px', fontWeight: '550' }],
+            'p-badge': ['12px', { lineHeight: '16px', fontWeight: '450' }],
+            'p-th': ['12px', { lineHeight: '16px', fontWeight: '550' }],
+            'p-tab': ['13px', { lineHeight: '20px' }],
+          },
+          borderRadius: {
+            'p-card': '12px',
+            'p-btn': '8px',
+            'p-badge': '10px',
+            'p-input': '8px',
+            'p-modal': '16px',
+          },
+          boxShadow: {
+            'p-card': '0 1px 0 rgba(26,26,26,.07), 0 1px 3px rgba(26,26,26,.07)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, sans-serif; }
+    body { font-size: 13px; font-weight: 450; color: #1a1a1a; }
+  </style>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body>
+<body class="bg-p-bg">
   <div id="root"></div>
   <script type="text/babel">
     const { useState } = React;
 
+/* ─── Shared Components ─── */
 
-const SeznamAppWireframesV2 = () => {
+const Badge = ({ tone = 'neutral', children }) => {
+  const tones = {
+    success: 'bg-p-success-surface text-p-text',
+    warning: 'bg-p-warning-surface text-p-text',
+    critical: 'bg-p-critical-surface text-p-text',
+    info: 'bg-p-info-surface text-p-text',
+    neutral: 'bg-p-badge-neutral text-p-text',
+  };
+  return (
+    <span className={`inline-flex items-center px-2 py-[2px] rounded-p-badge text-p-badge ${tones[tone] || tones.neutral}`}>
+      {children}
+    </span>
+  );
+};
+
+const Button = ({ variant = 'secondary', size = 'default', onClick, children, className = '' }) => {
+  const base = 'inline-flex items-center justify-center rounded-p-btn text-p-btn font-[550] transition-colors';
+  const pad = size === 'slim' ? 'px-2 py-1' : 'px-3 py-[6px]';
+  const variants = {
+    primary: 'bg-p-btn-primary text-white hover:bg-p-btn-primary-hover',
+    secondary: 'bg-p-surface border border-p-btn-secondary-border text-p-text hover:bg-p-bg',
+    critical: 'bg-p-critical-text text-white hover:bg-[#b52312]',
+    'critical-secondary': 'bg-p-surface border border-p-critical-text text-p-critical-text hover:bg-p-critical-bg',
+    plain: 'text-p-interactive hover:underline bg-transparent p-0',
+  };
+  return (
+    <button onClick={onClick} className={`${base} ${pad} ${variants[variant] || variants.secondary} ${className}`}>
+      {children}
+    </button>
+  );
+};
+
+const Banner = ({ tone = 'info', children }) => {
+  const tones = {
+    warning: 'border-l-[#B98900] bg-p-warning-bg',
+    critical: 'border-l-p-critical-text bg-p-critical-bg',
+    success: 'border-l-p-success-text bg-p-success-bg',
+    info: 'border-l-p-focus bg-p-info-bg',
+  };
+  return (
+    <div className={`rounded-p-card border-l-[3px] p-4 ${tones[tone] || tones.info}`}>
+      {children}
+    </div>
+  );
+};
+
+const Section = ({ title, padding = true, action, children }) => (
+  <div className={`bg-p-surface rounded-p-card shadow-p-card ${padding ? 'p-4' : ''}`}>
+    {(title || action) && (
+      <div className={`flex items-center justify-between ${padding ? 'mb-3' : 'px-4 pt-4 pb-3'}`}>
+        {title && <h2 className="text-p-heading text-p-text">{title}</h2>}
+        {action}
+      </div>
+    )}
+    {children}
+  </div>
+);
+
+const Toggle = ({ checked = false, size = 'default' }) => {
+  const w = size === 'small' ? 'w-[36px] h-[20px]' : 'w-[36px] h-[20px]';
+  return (
+    <div className={`relative ${w} rounded-[10px] ${checked ? 'bg-p-toggle-on' : 'bg-p-toggle-off'} cursor-pointer flex-shrink-0`}>
+      <div className={`absolute top-[2px] w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${checked ? 'left-[18px]' : 'left-[2px]'}`}></div>
+    </div>
+  );
+};
+
+const TextField = ({ placeholder, value, icon }) => (
+  <div className="relative">
+    {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-p-text-disabled">{icon}</div>}
+    <input
+      type="text"
+      placeholder={placeholder}
+      defaultValue={value}
+      className={`w-full border border-p-text-disabled rounded-p-input py-2 text-p-base text-p-text placeholder:text-p-text-disabled focus:border-p-focus focus:ring-1 focus:ring-p-focus focus:outline-none ${icon ? 'pl-9 pr-3' : 'px-3'}`}
+    />
+  </div>
+);
+
+const Select = ({ options, className = '' }) => (
+  <select className={`border border-p-text-disabled rounded-p-input px-3 py-2 text-p-base text-p-text focus:border-p-focus focus:ring-1 focus:ring-p-focus focus:outline-none bg-white ${className}`}>
+    {options.map((opt, i) => <option key={i} value={opt.value || opt}>{opt.label || opt}</option>)}
+  </select>
+);
+
+const HelpFooter = () => (
+  <div className="border-t border-p-border pt-4 mt-6 text-center pb-4">
+    <p className="text-p-base text-p-text-disabled">
+      Potřebujete pomoc?{' '}
+      <a href="#" className="text-p-interactive hover:underline">Dokumentace</a> · {' '}
+      <a href="#" className="text-p-interactive hover:underline">Podpora Seznam.cz</a> · {' '}
+      <a href="#" className="text-p-interactive hover:underline">Kontaktujte nás</a>
+    </p>
+  </div>
+);
+
+const SearchIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg className="w-4 h-4 text-p-success-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+  </svg>
+);
+
+const WarningIcon = () => (
+  <svg className="w-4 h-4 text-p-warning-text flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+
+/* ─── Main App ─── */
+
+const SeznamAppWireframes = () => {
   const [currentScreen, setCurrentScreen] = useState('intro');
 
   const screens = [
-    { id: 'intro', label: '1. Úvodní stránka' },
+    { id: 'intro', label: '1. Uvodní stránka' },
     { id: 'onboarding', label: '2. Onboarding' },
     { id: 'overview', label: '3. Přehled (Overview)' },
     { id: 'products', label: '4. Produkty' },
@@ -27,30 +221,30 @@ const SeznamAppWireframesV2 = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* BFS compliance annotation banner */}
-      <div className="bg-green-50 border-b border-green-200 px-3 py-1.5 text-center">
-        <span className="text-[10px] text-green-700">Wireframes v3 — Built for Shopify compliant · Polaris color system · CSB pattern · ResourceFeedback · Help footer</span>
+    <div className="min-h-screen bg-p-bg font-polaris">
+      {/* Annotation banner */}
+      <div className="bg-p-info-bg border-b border-p-border px-4 py-2 text-center">
+        <span className="text-p-base text-p-interactive">Wireframes v4 — Polaris App Home design system · Inter font · s-page/s-section/s-table patterns</span>
       </div>
 
       {/* Screen Selector */}
-      <div className="bg-white border-b border-gray-200 p-3 sticky top-0 z-50">
+      <div className="bg-p-surface border-b border-p-border px-4 py-3 sticky top-0 z-50">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-6 h-6 bg-red-600 rounded flex items-center justify-center">
-            <span className="text-white text-xs font-bold">S</span>
+            <span className="text-white text-[11px] font-[650]">S</span>
           </div>
-          <h1 className="text-sm font-semibold text-gray-800">Seznam.cz (Sklik + Zboží.cz) — Wireframes v3</h1>
-          <span className="text-xs text-gray-400 ml-auto">Sales Channel</span>
+          <h1 className="text-p-heading text-p-text">Seznam.cz (Sklik + Zbozi.cz) — Wireframes v4</h1>
+          <span className="text-p-base text-p-text-disabled ml-auto">Sales Channel</span>
         </div>
         <div className="flex flex-wrap gap-1">
           {screens.map((screen) => (
             <button
               key={screen.id}
               onClick={() => setCurrentScreen(screen.id)}
-              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+              className={`px-3 py-[6px] rounded-p-btn text-p-btn font-[550] transition-colors ${
                 currentScreen === screen.id
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-p-btn-primary text-white'
+                  : 'bg-p-bg text-p-text hover:bg-p-border'
               }`}
             >
               {screen.label}
@@ -62,37 +256,43 @@ const SeznamAppWireframesV2 = () => {
       {/* Sidebar + Content Layout */}
       <div className="flex">
         {/* Simulated Shopify Admin Sidebar */}
-        <div className="hidden md:block w-52 bg-gray-900 min-h-screen p-3 text-gray-300 text-xs space-y-1">
-          <div className="text-gray-500 uppercase text-[10px] font-semibold mb-2 mt-2">Sales channels</div>
-          <div className="flex items-center gap-2 px-2 py-1.5 rounded bg-gray-800 text-white">
-            <span className="text-sm">🏠</span> Online Store
+        <div className="hidden md:block w-[210px] bg-p-sidebar min-h-screen p-3 text-p-sidebar-text text-p-base space-y-0.5 flex-shrink-0">
+          <div className="text-p-text-disabled uppercase text-[10px] font-[650] tracking-wider mb-2 mt-2 px-2">Sales channels</div>
+
+          <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-p-sidebar-active text-white cursor-pointer">
+            <span className="w-4 h-4 bg-[#5C6AC4] rounded-[3px] flex items-center justify-center text-white text-[8px] font-[650]">O</span>
+            Online Store
           </div>
+
           <div
             onClick={() => setCurrentScreen(currentScreen === 'intro' ? 'intro' : 'overview')}
-            className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer ${currentScreen !== 'intro' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
+            className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-colors ${currentScreen !== 'intro' ? 'bg-p-sidebar-active text-white' : 'text-p-sidebar-text hover:bg-p-sidebar-active/50'}`}
           >
-            <div className="w-4 h-4 bg-red-600 rounded flex items-center justify-center">
-              <span className="text-white text-[8px] font-bold">S</span>
+            <div className="w-4 h-4 bg-red-600 rounded-[3px] flex items-center justify-center">
+              <span className="text-white text-[8px] font-[650]">S</span>
             </div>
             Seznam.cz
           </div>
+
           {currentScreen !== 'intro' && (
-            <div className="ml-6 space-y-0.5 text-[11px]">
-              <div onClick={() => setCurrentScreen('overview')} className={`px-2 py-1 rounded cursor-pointer ${currentScreen === 'overview' ? 'text-white bg-gray-800' : 'text-gray-400 hover:text-gray-200'}`}>Přehled</div>
-              <div onClick={() => setCurrentScreen('products')} className={`px-2 py-1 rounded cursor-pointer ${currentScreen === 'products' ? 'text-white bg-gray-800' : 'text-gray-400 hover:text-gray-200'}`}>Produkty</div>
-              <div onClick={() => setCurrentScreen('settings')} className={`px-2 py-1 rounded cursor-pointer ${currentScreen === 'settings' ? 'text-white bg-gray-800' : 'text-gray-400 hover:text-gray-200'}`}>Nastavení</div>
+            <div className="ml-6 space-y-0.5 text-[12px]">
+              <div onClick={() => setCurrentScreen('overview')} className={`px-2 py-1 rounded-md cursor-pointer transition-colors ${currentScreen === 'overview' ? 'text-white bg-p-sidebar-active' : 'text-p-sidebar-text hover:text-white'}`}>Přehled</div>
+              <div onClick={() => setCurrentScreen('products')} className={`px-2 py-1 rounded-md cursor-pointer transition-colors ${currentScreen === 'products' ? 'text-white bg-p-sidebar-active' : 'text-p-sidebar-text hover:text-white'}`}>Produkty</div>
+              <div onClick={() => setCurrentScreen('settings')} className={`px-2 py-1 rounded-md cursor-pointer transition-colors ${currentScreen === 'settings' ? 'text-white bg-p-sidebar-active' : 'text-p-sidebar-text hover:text-white'}`}>Nastavení</div>
             </div>
           )}
-          <div className="flex items-center gap-2 px-2 py-1.5 text-gray-300 hover:bg-gray-800 rounded">
-            <span className="text-sm">🛍️</span> Shop
+
+          <div className="flex items-center gap-2 px-2 py-1.5 text-p-sidebar-text hover:bg-p-sidebar-active/50 rounded-md cursor-pointer">
+            <span className="w-4 h-4 bg-[#50B83C] rounded-[3px] flex items-center justify-center text-white text-[8px] font-[650]">S</span>
+            Shop
           </div>
 
-          <div className="text-gray-500 uppercase text-[10px] font-semibold mb-2 mt-4">Apps</div>
-          <div className="px-2 py-1.5 text-gray-400 hover:bg-gray-800 rounded">Shopify Flow</div>
+          <div className="text-p-text-disabled uppercase text-[10px] font-[650] tracking-wider mb-2 mt-4 px-2">Apps</div>
+          <div className="px-2 py-1.5 text-p-sidebar-text hover:bg-p-sidebar-active/50 rounded-md cursor-pointer">Shopify Flow</div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-4">
+        {/* Main Content — s-page */}
+        <div className="flex-1 px-5 py-4 max-w-[998px] mx-auto">
           {currentScreen === 'intro' && <IntroductionScreen onNavigate={setCurrentScreen} />}
           {currentScreen === 'onboarding' && <OnboardingScreen onNavigate={setCurrentScreen} />}
           {currentScreen === 'overview' && <OverviewScreen onNavigate={setCurrentScreen} />}
@@ -104,847 +304,823 @@ const SeznamAppWireframesV2 = () => {
   );
 };
 
-// ============================================
-// 1. INTRODUCTION PAGE (pre-onboarding)
-// Follows Shopify IntroductionPage + FeatureCard pattern
-// Copy from Radek Svoboda (Mar 2026)
-// ============================================
+/* ═══════════════════════════════════════════════
+   1. INTRODUCTION PAGE (pre-OAuth landing)
+   Follows Shopify IntroductionPage + FeatureCard pattern
+   Copy from Radek Svoboda (Mar 2026)
+   ═══════════════════════════════════════════════ */
+
 const IntroductionScreen = ({ onNavigate }) => (
-  <div className="space-y-4 max-w-2xl mx-auto">
+  <div className="space-y-4">
     {/* Hero Section */}
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-      <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white">
+    <div className="bg-p-surface rounded-p-card shadow-p-card overflow-hidden">
+      <div className="bg-gradient-to-r from-[#1a1a1a] to-[#333] p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow">
-            <span className="text-red-600 text-xl font-bold">S</span>
+          <div className="w-12 h-12 bg-white rounded-p-card flex items-center justify-center shadow-sm">
+            <span className="text-red-600 text-xl font-[650]">S</span>
           </div>
           <div>
-            <h1 className="text-lg font-semibold">Seznam.cz</h1>
-            <span className="text-gray-400 text-xs">Sklik + Zboží.cz</span>
+            <h1 className="text-p-heading-lg text-white">Seznam.cz</h1>
+            <span className="text-p-base text-[#b5b5b5]">Sklik + Zbozi.cz</span>
           </div>
         </div>
-        <p className="text-sm text-gray-300 leading-relaxed">
-          Buďte tam, kde zákazníci skutečně hledají — ve <strong className="text-white">vyhledávání Seznam.cz</strong>,
-          na <strong className="text-white">nejnavštěvovanějších českých webech</strong> nebo
-          na <strong className="text-white">srovnávači Zboží.cz</strong>, který týdně navštíví téměř milion nakupujících.
+        <p className="text-p-base text-[#d0d0d0] leading-relaxed">
+          Budte tam, kde zákazníci skutecne hledají — ve <strong className="text-white">vyhledávání Seznam.cz</strong>,
+          na <strong className="text-white">nejnavštevovanejších ceských webech</strong> nebo
+          na <strong className="text-white">srovnávaci Zbozi.cz</strong>, který týdne navštíví témer milion nakupujících.
         </p>
       </div>
 
-      <div className="p-6">
-        <h2 className="text-sm font-semibold text-gray-900 mb-4">Co získáte</h2>
+      <div className="p-5">
+        <h2 className="text-p-heading text-p-text mb-4">Co získáte</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Feature Card: SEM Tracking */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+          <div className="border border-p-border rounded-p-btn p-4 hover:border-p-text-disabled transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-8 h-8 bg-[#FFF5E8] rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-[#B98900]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-sm font-medium text-gray-900">Seznam Event Measurement</h3>
+              <h3 className="text-p-heading text-p-text">Seznam Event Measurement</h3>
             </div>
-            <p className="text-xs text-gray-600">
-              Měřte události a využijte pokročilé možnosti retargetingu.
+            <p className="text-p-base text-p-text-secondary">
+              Meřte události a využijte pokrocilé možnosti retargetingu.
               Spusťte produktovou inzerci v Seznam Nákupy a dynamický retargeting.
             </p>
           </div>
 
           {/* Feature Card: Product Feed */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+          <div className="border border-p-border rounded-p-btn p-4 hover:border-p-text-disabled transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xs">XML</span>
+              <div className="w-8 h-8 bg-p-sidebar rounded-lg flex items-center justify-center">
+                <span className="text-white font-[650] text-[10px]">XML</span>
               </div>
-              <h3 className="text-sm font-medium text-gray-900">Produktový feed pro Zboží.cz</h3>
+              <h3 className="text-p-heading text-p-text">Produktový feed pro Zbozi.cz</h3>
             </div>
-            <p className="text-xs text-gray-600">
-              Automatické předávání produktů z vašeho e-shopu do cenového srovnávače Zboží.cz.
+            <p className="text-p-base text-p-text-secondary">
+              Automatické předávání produktu z vašeho e-shopu do cenového srovnávace Zbozi.cz.
               Kategorie, doprava i metafieldy — vše mapujeme za vás.
             </p>
           </div>
 
           {/* Feature Card: Reviews */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+          <div className="border border-p-border rounded-p-btn p-4 hover:border-p-text-disabled transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <span className="text-yellow-600 font-bold text-lg">★</span>
+              <div className="w-8 h-8 bg-p-warning-bg rounded-lg flex items-center justify-center">
+                <span className="text-p-warning-text font-[650] text-lg">&#9733;</span>
               </div>
-              <h3 className="text-sm font-medium text-gray-900">Recenze pro Zboží.cz</h3>
+              <h3 className="text-p-heading text-p-text">Recenze pro Zbozi.cz</h3>
             </div>
-            <p className="text-xs text-gray-600">
-              Sběr zákaznických hodnocení a zobrazování recenzí vašeho e-shopu na Zboží.cz.
-              Automaticky po dokončení objednávky.
+            <p className="text-p-base text-p-text-secondary">
+              Sber zákaznických hodnocení a zobrazování recenzí vašeho e-shopu na Zbozi.cz.
+              Automaticky po dokoncení objednávky.
             </p>
           </div>
 
           {/* Feature Card: Reach */}
-          <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+          <div className="border border-p-border rounded-p-btn p-4 hover:border-p-text-disabled transition-colors">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-8 h-8 bg-p-info-bg rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-p-interactive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
                 </svg>
               </div>
-              <h3 className="text-sm font-medium text-gray-900">95 % české internetové populace</h3>
+              <h3 className="text-p-heading text-p-text">95 % ceské internetové populace</h3>
             </div>
-            <p className="text-xs text-gray-600">
-              Oslovte díky inzerci na Seznam.cz prakticky celý český internet.
-              Jeden kanál pro vyhledávání, srovnávač i retargeting.
+            <p className="text-p-base text-p-text-secondary">
+              Oslovte díky inzerci na Seznam.cz prakticky celý ceský internet.
+              Jeden kanál pro vyhledávání, srovnávac i retargeting.
             </p>
           </div>
         </div>
 
-        <button onClick={() => onNavigate('onboarding')} className="mt-6 w-full bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+        <Button variant="primary" onClick={() => onNavigate('onboarding')} className="mt-6 w-full py-3 gap-2">
           <div className="w-5 h-5 bg-white/20 rounded flex items-center justify-center">
-            <span className="text-white text-xs font-bold">S</span>
+            <span className="text-white text-[10px] font-[650]">S</span>
           </div>
           Připojit účet Seznam.cz
-        </button>
+        </Button>
 
-        <p className="text-xs text-gray-500 mt-3 text-center">
-          Pro připojení potřebujete účet na <a href="#" className="text-blue-600 hover:underline">partner.seznam.cz</a>.
-          Nemáte účet? <a href="#" className="text-blue-600 hover:underline">Vytvořit zdarma ↗</a>
+        <p className="text-p-base text-p-text-disabled mt-3 text-center">
+          Pro připojení potřebujete účet na <a href="#" className="text-p-interactive hover:underline">partner.seznam.cz</a>.
+          Nemáte účet? <a href="#" className="text-p-interactive hover:underline">Vytvořit zdarma</a>
         </p>
       </div>
     </div>
 
     {/* Video Section */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <Section>
       <div className="flex flex-col md:flex-row gap-4 items-center">
-        <div className="w-full md:w-1/2 aspect-video bg-gray-900 rounded-lg flex items-center justify-center relative">
-          <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors border-2 border-white">
+        <div className="w-full md:w-1/2 aspect-video bg-p-sidebar rounded-p-btn flex items-center justify-center relative">
+          <div className="w-12 h-12 bg-p-sidebar rounded-full flex items-center justify-center cursor-pointer hover:bg-p-sidebar-active transition-colors border-2 border-white">
             <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
-          <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded">2:30</div>
+          <div className="absolute bottom-2 right-2 bg-black/60 text-white text-p-badge px-2 py-0.5 rounded">2:30</div>
         </div>
         <div className="flex-1">
-          <h2 className="text-base font-semibold text-gray-900 mb-1">
-            Jak to funguje?
-          </h2>
-          <p className="text-sm text-gray-600">
-            Podívejte se, jak české e-shopy využívají Seznam.cz k růstu prodejů přes Shopify.
+          <h2 className="text-p-heading-lg text-p-text mb-1">Jak to funguje?</h2>
+          <p className="text-p-base text-p-text-secondary">
+            Podívejte se, jak ceské e-shopy využívají Seznam.cz k rustu prodejů přes Shopify.
           </p>
         </div>
       </div>
-    </div>
+    </Section>
 
-    {/* Help footer — BFS requirement */}
-    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
-      <p className="text-xs text-gray-400">
-        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
-      </p>
-    </div>
+    <HelpFooter />
   </div>
 );
 
-// ============================================
-// 2. ONBOARDING (post-OAuth, step-by-step)
-// Follows Shopify OnboardingCard + AccountConnection pattern
-// Max 5 steps, auto-complete where possible
-// ============================================
+
+/* ═══════════════════════════════════════════════
+   2. ONBOARDING (post-OAuth, step-by-step)
+   Follows Shopify OnboardingCard + AccountConnection pattern
+   Max 5 steps, auto-complete where possible
+   ═══════════════════════════════════════════════ */
+
 const OnboardingScreen = ({ onNavigate }) => (
-  <div className="space-y-4 max-w-2xl mx-auto">
+  <div className="space-y-4">
     <div>
-      <h1 className="text-lg font-semibold text-gray-900">Nastavení Seznam.cz</h1>
-      <p className="text-sm text-gray-500">Dokončete nastavení ve 4 krocích</p>
+      <h1 className="text-p-heading-lg text-p-text">Nastavení Seznam.cz</h1>
+      <p className="text-p-base text-p-text-secondary">Dokoncete nastavení ve 4 krocích</p>
     </div>
 
     {/* Progress Bar */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <Section>
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-medium text-gray-700">Postup nastavení</span>
-        <span className="text-xs text-gray-500">2 ze 4 dokončeno</span>
+        <span className="text-p-heading text-p-text">Postup nastavení</span>
+        <span className="text-p-base text-p-text-secondary">2 ze 4 dokonceno</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
-        <div className="bg-green-600 h-2 rounded-full transition-all" style={{width: '50%'}}></div>
+      <div className="w-full bg-p-border rounded-full h-2">
+        <div className="bg-p-success-text h-2 rounded-full transition-all" style={{width: '50%'}}></div>
       </div>
-    </div>
+    </Section>
 
     {/* Step 1: Account Connection — COMPLETED */}
-    <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-green-500">
+    <div className="bg-p-surface rounded-p-card shadow-p-card p-4 border-l-[3px] border-l-p-success-text">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+          <div className="w-8 h-8 bg-p-success-surface rounded-full flex items-center justify-center flex-shrink-0">
+            <CheckIcon />
           </div>
           <div>
-            <h3 className="font-semibold text-sm text-gray-900">1. Připojení účtu Seznam.cz</h3>
+            <h3 className="text-p-heading text-p-text">1. Připojení účtu Seznam.cz</h3>
             <div className="flex items-center gap-2 mt-1">
-              <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
-                <span className="text-red-600 text-xs font-bold">S</span>
+              <div className="w-6 h-6 bg-p-critical-surface rounded-full flex items-center justify-center">
+                <span className="text-red-600 text-[10px] font-[650]">S</span>
               </div>
-              <span className="text-xs text-gray-600">obchod@example.cz</span>
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Připojeno</span>
+              <span className="text-p-base text-p-text-secondary">obchod@example.cz</span>
+              <Badge tone="success">Připojeno</Badge>
             </div>
-            <div className="mt-2 flex flex-wrap gap-2 text-xs text-gray-500">
-              <span>Sklik ID: <code className="bg-gray-100 px-1 rounded">987654</code></span>
-              <span>SEM Key: <code className="bg-gray-100 px-1 rounded">sem_abc...xyz</code></span>
+            <div className="mt-2 flex flex-wrap gap-2 text-p-base text-p-text-secondary">
+              <span>Sklik ID: <code className="bg-p-bg px-1 rounded text-p-base">987654</code></span>
+              <span>SEM Key: <code className="bg-p-bg px-1 rounded text-p-base">sem_abc...xyz</code></span>
             </div>
           </div>
         </div>
-        <button className="text-xs text-gray-500 hover:text-gray-700">Změnit</button>
+        <Button variant="plain">Zmenit</Button>
       </div>
     </div>
 
     {/* Step 2: Market Selection — COMPLETED */}
-    <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-green-500">
+    <div className="bg-p-surface rounded-p-card shadow-p-card p-4 border-l-[3px] border-l-p-success-text">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+          <div className="w-8 h-8 bg-p-success-surface rounded-full flex items-center justify-center flex-shrink-0">
+            <CheckIcon />
           </div>
           <div>
-            <h3 className="font-semibold text-sm text-gray-900">2. Výběr trhu</h3>
+            <h3 className="text-p-heading text-p-text">2. Výber trhu</h3>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm">🇨🇿</span>
-              <span className="text-xs text-gray-600">Česká republika (CZK)</span>
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Aktivní</span>
+              <span className="text-[14px]">&#127464;&#127487;</span>
+              <span className="text-p-base text-p-text-secondary">Ceská republika (CZK)</span>
+              <Badge tone="success">Aktivní</Badge>
             </div>
           </div>
         </div>
-        <button className="text-xs text-gray-500 hover:text-gray-700">Změnit</button>
+        <Button variant="plain">Zmenit</Button>
       </div>
     </div>
 
     {/* Step 3: Enable Modules — ACTIVE */}
-    <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
+    <div className="bg-p-surface rounded-p-card shadow-p-card p-4 border-l-[3px] border-l-p-focus">
       <div className="flex items-start gap-3 mb-4">
-        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <span className="text-blue-600 font-bold text-sm">3</span>
+        <div className="w-8 h-8 bg-p-info-bg rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-p-interactive font-[650] text-p-base">3</span>
         </div>
         <div>
-          <h3 className="font-semibold text-sm text-gray-900">Aktivujte služby</h3>
-          <p className="text-xs text-gray-500">Vyberte, co chcete používat. Můžete kdykoliv změnit v nastavení.</p>
+          <h3 className="text-p-heading text-p-text">Aktivujte služby</h3>
+          <p className="text-p-base text-p-text-secondary">Vyberte, co chcete používat. Mužete kdykoliv zmenit v nastavení.</p>
         </div>
       </div>
 
       <div className="space-y-3 ml-11">
         {/* SEM — Primary module */}
-        <div className="border-2 border-orange-200 rounded-lg p-3 bg-orange-50/30">
+        <div className="border-2 border-p-warning-surface rounded-p-btn p-3 bg-p-warning-bg/30">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 bg-p-warning-bg rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-p-warning-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
               <div>
-                <div className="font-semibold text-sm text-gray-900">Seznam Event Measurement</div>
-                <div className="text-xs text-gray-600 mt-0.5">
-                  Měřicí a retargetingový kód pro efektivní měření událostí a výkonu reklamy.
+                <div className="text-p-heading text-p-text">Seznam Event Measurement</div>
+                <div className="text-p-base text-p-text-secondary mt-0.5">
+                  Mericí a retargetingový kód pro efektivní merení událostí a výkonu reklamy.
                   Sklik konverze, dynamický retargeting a Seznam Nákupy v jednom.
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
-                  <span className="bg-orange-100 text-orange-700 text-[10px] px-1.5 py-0.5 rounded">Sklik konverze</span>
-                  <span className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded">DRTG retargeting</span>
-                  <span className="bg-blue-100 text-blue-700 text-[10px] px-1.5 py-0.5 rounded">Seznam Nákupy</span>
-                  <span className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded">S2S + Frontend</span>
+                  <Badge tone="warning">Sklik konverze</Badge>
+                  <Badge tone="info">DRTG retargeting</Badge>
+                  <Badge tone="info">Seznam Nákupy</Badge>
+                  <Badge tone="neutral">S2S + Frontend</Badge>
                 </div>
               </div>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-              <input type="checkbox" checked className="sr-only peer" readOnly />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-            </label>
+            <Toggle checked={true} />
           </div>
         </div>
 
         {/* Product Feed */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-white font-bold text-xs flex-shrink-0">XML</div>
+              <div className="w-10 h-10 bg-p-sidebar rounded-lg flex items-center justify-center text-white font-[650] text-[10px] flex-shrink-0">XML</div>
               <div>
-                <div className="font-semibold text-sm text-gray-900">Produktový feed pro Zboží.cz</div>
-                <div className="text-xs text-gray-600 mt-0.5">
-                  Automatický XML feed pro cenový srovnávač Zboží.cz.
-                  Mapování kategorií, dopravy a metafieldů.
+                <div className="text-p-heading text-p-text">Produktový feed pro Zbozi.cz</div>
+                <div className="text-p-base text-p-text-secondary mt-0.5">
+                  Automatický XML feed pro cenový srovnávac Zbozi.cz.
+                  Mapování kategorií, dopravy a metafieldu.
                 </div>
-                <div className="text-xs text-orange-600 mt-1 flex items-center gap-1">
+                <div className="text-p-base text-p-warning-text mt-1 flex items-center gap-1">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Používá Shopify Sales Channel pro výběr produktů
+                  Používá Shopify Sales Channel pro výber produktu
                 </div>
               </div>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-              <input type="checkbox" checked className="sr-only peer" readOnly />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-            </label>
+            <Toggle checked={true} />
           </div>
         </div>
 
         {/* Reviews */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-yellow-600 font-bold text-lg">★</span>
+              <div className="w-10 h-10 bg-p-warning-bg rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-p-warning-text font-[650] text-lg">&#9733;</span>
               </div>
               <div>
-                <div className="font-semibold text-sm text-gray-900">Recenze pro Zboží.cz</div>
-                <div className="text-xs text-gray-600 mt-0.5">
-                  Automatický sběr recenzí po nákupu. Podporuje Checkout UI Extension (Plus)
+                <div className="text-p-heading text-p-text">Recenze pro Zbozi.cz</div>
+                <div className="text-p-base text-p-text-secondary mt-0.5">
+                  Automatický sber recenzí po nákupu. Podporuje Checkout UI Extension (Plus)
                   i standardní cart block.
                 </div>
               </div>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
-              <input type="checkbox" className="sr-only peer" />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-            </label>
+            <Toggle checked={false} />
           </div>
         </div>
       </div>
     </div>
 
     {/* Step 4: Product Publishing — DISABLED */}
-    <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-gray-200 opacity-60">
+    <div className="bg-p-surface rounded-p-card shadow-p-card p-4 border-l-[3px] border-l-p-border opacity-60">
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <span className="text-gray-400 font-bold text-sm">4</span>
+        <div className="w-8 h-8 bg-p-bg rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-p-text-disabled font-[650] text-p-base">4</span>
         </div>
         <div>
-          <h3 className="font-semibold text-sm text-gray-900">Publikování produktů</h3>
-          <p className="text-xs text-gray-500">
-            Vyberte produkty k publikování na Zboží.cz. Ve výchozím stavu budou dostupné všechny produkty.
+          <h3 className="text-p-heading text-p-text">Publikování produktu</h3>
+          <p className="text-p-base text-p-text-secondary">
+            Vyberte produkty k publikování na Zbozi.cz. Ve výchozím stavu budou dostupné všechny produkty.
           </p>
         </div>
       </div>
     </div>
 
     {/* CTA */}
-    <div className="bg-gray-50 rounded-lg p-4">
+    <Section>
       <div className="flex items-center justify-between mb-3">
-        <div className="text-sm text-gray-700">Vybrané služby:</div>
+        <span className="text-p-base text-p-text-secondary">Vybrané služby:</span>
       </div>
       <div className="flex flex-wrap gap-2 mb-4">
-        <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full">✓ Seznam Event Measurement</span>
-        <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">✓ Produktový feed</span>
+        <Badge tone="warning">Seznam Event Measurement</Badge>
+        <Badge tone="neutral">Produktový feed</Badge>
       </div>
-      <button onClick={() => onNavigate('products')} className="w-full bg-gray-900 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-        Pokračovat k publikování produktů
-      </button>
-    </div>
+      <Button variant="primary" onClick={() => onNavigate('products')} className="w-full py-2.5">
+        Pokracovat k publikování produktu
+      </Button>
+    </Section>
 
-    {/* Help footer — BFS requirement */}
-    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
-      <p className="text-xs text-gray-400">
-        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
-      </p>
-    </div>
+    <HelpFooter />
   </div>
 );
 
-// ============================================
-// 3. OVERVIEW PAGE (channel homepage)
-// Follows Shopify OverviewPage + ProductStatusSection pattern
-// ============================================
+
+/* ═══════════════════════════════════════════════
+   3. OVERVIEW PAGE (channel homepage)
+   Follows Shopify OverviewPage + ProductStatusSection pattern
+   ═══════════════════════════════════════════════ */
+
 const OverviewScreen = ({ onNavigate }) => (
-  <div className="space-y-4 max-w-3xl mx-auto">
+  <div className="space-y-4">
     <div className="flex items-center justify-between">
       <div>
-        <h1 className="text-lg font-semibold text-gray-900">Přehled kanálu Seznam.cz</h1>
-        <p className="text-xs text-gray-500">obchod@example.cz · 🇨🇿 Česká republika</p>
+        <h1 className="text-p-heading-lg text-p-text">Přehled kanálu Seznam.cz</h1>
+        <p className="text-p-base text-p-text-secondary">obchod@example.cz · Ceská republika</p>
       </div>
       <div className="flex gap-2">
-        <button className="border border-gray-300 text-gray-700 px-3 py-1.5 rounded text-xs hover:bg-gray-50">
-          Otevřít Sklik ↗
-        </button>
-        <button className="border border-gray-300 text-gray-700 px-3 py-1.5 rounded text-xs hover:bg-gray-50">
-          Otevřít Zboží.cz ↗
-        </button>
+        <Button variant="secondary">Otevřít Sklik</Button>
+        <Button variant="secondary">Otevřít Zbozi.cz</Button>
       </div>
     </div>
 
-    {/* Product Status Section — Shopify Sales Channel pattern */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="font-semibold text-sm text-gray-900">Stav produktů na Zboží.cz</h2>
-        <button onClick={() => onNavigate('products')} className="text-blue-600 text-xs hover:underline">Spravovat produkty →</button>
-      </div>
-
+    {/* Product Status Section */}
+    <Section title="Stav produktu na Zbozi.cz" action={<Button variant="plain" onClick={() => onNavigate('products')}>Spravovat produkty</Button>}>
       <div className="grid grid-cols-4 gap-3">
-        <div className="text-center p-3 bg-gray-50 rounded-lg">
-          <div className="text-xl font-semibold text-gray-900">1,284</div>
-          <div className="text-xs text-gray-500">Publikováno</div>
+        <div className="text-center p-3 bg-p-bg rounded-p-btn">
+          <div className="text-xl font-[650] text-p-text">1 284</div>
+          <div className="text-p-base text-p-text-secondary">Publikováno</div>
         </div>
-        <div className="text-center p-3 bg-green-50 rounded-lg">
-          <div className="text-xl font-semibold text-green-600">1,156</div>
-          <div className="text-xs text-green-700 flex items-center gap-1 justify-center">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+        <div className="text-center p-3 bg-p-success-bg rounded-p-btn">
+          <div className="text-xl font-[650] text-p-success-text">1 156</div>
+          <div className="text-p-base text-p-success-text flex items-center gap-1 justify-center">
+            <span className="w-1.5 h-1.5 bg-p-success-text rounded-full"></span>
             Schváleno
           </div>
         </div>
-        <div className="text-center p-3 bg-yellow-50 rounded-lg">
-          <div className="text-xl font-semibold text-yellow-600">42</div>
-          <div className="text-xs text-yellow-700 flex items-center gap-1 justify-center">
-            <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
-            Čeká na schválení
+        <div className="text-center p-3 bg-p-warning-bg rounded-p-btn">
+          <div className="text-xl font-[650] text-p-warning-text">42</div>
+          <div className="text-p-base text-p-warning-text flex items-center gap-1 justify-center">
+            <span className="w-1.5 h-1.5 bg-p-warning-text rounded-full"></span>
+            Ceká na schválení
           </div>
         </div>
-        <div className="text-center p-3 bg-red-50 rounded-lg">
-          <div className="text-xl font-semibold text-red-600">86</div>
-          <div className="text-xs text-red-700 flex items-center gap-1 justify-center">
-            <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+        <div className="text-center p-3 bg-p-critical-bg rounded-p-btn">
+          <div className="text-xl font-[650] text-p-critical-text">86</div>
+          <div className="text-p-base text-p-critical-text flex items-center gap-1 justify-center">
+            <span className="w-1.5 h-1.5 bg-p-critical-text rounded-full"></span>
             Vyžaduje akci
           </div>
         </div>
       </div>
 
       {/* ResourceFeedback warning */}
-      <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-lg p-2 flex items-start gap-2">
-        <svg className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-        <div>
-          <p className="text-yellow-800 text-xs">
-            <strong>42 produktů</strong> nemá namapovanou kategorii Zboží.cz.
-            <strong>86 produktů</strong> má chybějící EAN nebo výrobce.
-          </p>
-          <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('products'); }} className="text-yellow-700 text-xs hover:underline">Zobrazit a opravit →</a>
-        </div>
+      <div className="mt-3">
+        <Banner tone="warning">
+          <div className="flex items-start gap-2">
+            <WarningIcon />
+            <div>
+              <p className="text-p-base text-p-text">
+                <strong className="font-[650]">42 produktu</strong> nemá namapovanou kategorii Zbozi.cz.{' '}
+                <strong className="font-[650]">86 produktu</strong> má chybející EAN nebo výrobce.
+              </p>
+              <button onClick={() => onNavigate('products')} className="text-p-base text-p-interactive hover:underline mt-1">Zobrazit a opravit</button>
+            </div>
+          </div>
+        </Banner>
       </div>
 
       {/* Last sync */}
-      <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+      <div className="mt-3 pt-3 border-t border-p-border-subdued flex items-center justify-between text-p-base text-p-text-secondary">
         <span>Poslední synchronizace: dnes 14:32</span>
-        <button className="text-blue-600 hover:underline">Synchronizovat nyní</button>
+        <Button variant="plain">Synchronizovat nyní</Button>
       </div>
-    </div>
+    </Section>
 
     {/* SEM Tracking Status */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <h2 className="font-semibold text-sm text-gray-900">Seznam Event Measurement</h2>
-          <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Aktivní</span>
-        </div>
-        <button onClick={() => onNavigate('settings')} className="text-blue-600 text-xs hover:underline">Nastavení →</button>
+    <Section title="Seznam Event Measurement" action={
+      <div className="flex items-center gap-2">
+        <Badge tone="success">Aktivní</Badge>
+        <Button variant="plain" onClick={() => onNavigate('settings')}>Nastavení</Button>
       </div>
-
+    }>
       <div className="grid grid-cols-2 gap-3 mb-3">
         {/* Frontend tracking */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-xs font-medium text-gray-700">Frontend (Web Pixel)</span>
+            <div className="w-2 h-2 bg-p-success-text rounded-full"></div>
+            <span className="text-p-heading text-p-text">Frontend (Web Pixel)</span>
           </div>
-          <div className="text-xs text-gray-500 space-y-1">
+          <div className="text-p-base text-p-text-secondary space-y-1">
             <div className="flex justify-between">
               <span>Sledované události:</span>
-              <span className="font-medium text-gray-700">8 z 13</span>
+              <span className="font-[550] text-p-text">8 z 13</span>
             </div>
             <div className="flex justify-between">
               <span>Consent mode:</span>
-              <span className="font-medium text-green-600">Aktivní</span>
+              <span className="font-[550] text-p-success-text">Aktivní</span>
             </div>
           </div>
         </div>
 
         {/* Server-side tracking */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-xs font-medium text-gray-700">Server-Side (S2S)</span>
+            <div className="w-2 h-2 bg-p-success-text rounded-full"></div>
+            <span className="text-p-heading text-p-text">Server-Side (S2S)</span>
           </div>
-          <div className="text-xs text-gray-500 space-y-1">
+          <div className="text-p-base text-p-text-secondary space-y-1">
             <div className="flex justify-between">
               <span>orders/paid:</span>
-              <span className="font-medium text-green-600">Aktivní</span>
+              <span className="font-[550] text-p-success-text">Aktivní</span>
             </div>
             <div className="flex justify-between">
               <span>Deduplikace:</span>
-              <span className="font-medium text-green-600">order_id</span>
+              <span className="font-[550] text-p-text">order_id</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Conversion stats */}
-      <div className="border-t border-gray-100 pt-3">
+      <div className="border-t border-p-border-subdued pt-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-medium text-gray-700">Konverze (posledních 7 dní)</h3>
-          <select className="border border-gray-300 rounded px-2 py-0.5 text-xs">
-            <option>7 dní</option>
-            <option>30 dní</option>
-          </select>
+          <h3 className="text-p-heading text-p-text">Konverze (posledních 7 dní)</h3>
+          <Select options={['7 dní', '30 dní']} className="py-1 px-2 text-p-badge" />
         </div>
         <div className="grid grid-cols-4 gap-3">
-          <div className="text-center p-2 bg-gray-50 rounded">
-            <div className="text-lg font-semibold text-gray-900">847</div>
-            <div className="text-[10px] text-gray-500">Návštěvy</div>
+          <div className="text-center p-2 bg-p-bg rounded-p-btn">
+            <div className="text-lg font-[650] text-p-text">847</div>
+            <div className="text-p-badge text-p-text-secondary">Návštevy</div>
           </div>
-          <div className="text-center p-2 bg-gray-50 rounded">
-            <div className="text-lg font-semibold text-gray-900">124</div>
-            <div className="text-[10px] text-gray-500">Konverze</div>
+          <div className="text-center p-2 bg-p-bg rounded-p-btn">
+            <div className="text-lg font-[650] text-p-text">124</div>
+            <div className="text-p-badge text-p-text-secondary">Konverze</div>
           </div>
-          <div className="text-center p-2 bg-gray-50 rounded">
-            <div className="text-lg font-semibold text-green-600">186 420 Kč</div>
-            <div className="text-[10px] text-gray-500">Tržby</div>
+          <div className="text-center p-2 bg-p-bg rounded-p-btn">
+            <div className="text-lg font-[650] text-p-success-text">186 420 Kc</div>
+            <div className="text-p-badge text-p-text-secondary">Tržby</div>
           </div>
-          <div className="text-center p-2 bg-gray-50 rounded">
-            <div className="text-lg font-semibold text-gray-900">14.6%</div>
-            <div className="text-[10px] text-gray-500">Konverzní poměr</div>
+          <div className="text-center p-2 bg-p-bg rounded-p-btn">
+            <div className="text-lg font-[650] text-p-text">14.6%</div>
+            <div className="text-p-badge text-p-text-secondary">Konverzní pomer</div>
           </div>
         </div>
       </div>
-    </div>
+    </Section>
 
     {/* Reviews Status (compact) */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <Section>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-            <span className="text-yellow-600 font-bold text-lg">★</span>
+          <div className="w-10 h-10 bg-p-warning-bg rounded-lg flex items-center justify-center">
+            <span className="text-p-warning-text font-[650] text-lg">&#9733;</span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-semibold text-sm text-gray-900">Recenze Zboží.cz</h2>
-              <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">Neaktivní</span>
+              <h2 className="text-p-heading text-p-text">Recenze Zbozi.cz</h2>
+              <Badge tone="neutral">Neaktivní</Badge>
             </div>
-            <p className="text-xs text-gray-500 mt-0.5">Aktivujte sběr recenzí v nastavení</p>
+            <p className="text-p-base text-p-text-secondary mt-0.5">Aktivujte sber recenzí v nastavení</p>
           </div>
         </div>
-        <button onClick={() => onNavigate('settings')} className="bg-gray-900 text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-gray-800">
-          Aktivovat
-        </button>
+        <Button variant="primary" onClick={() => onNavigate('settings')}>Aktivovat</Button>
       </div>
-    </div>
+    </Section>
 
     {/* Quick Links */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <h2 className="font-semibold text-sm text-gray-900 mb-3">Rychlé odkazy</h2>
+    <Section title="Rychlé odkazy">
       <div className="grid grid-cols-2 gap-2">
-        <a href="#" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 text-xs text-gray-700">
-          <span className="text-gray-400">📄</span> Dokumentace pro merchanty
+        <a href="#" className="flex items-center gap-2 p-2 rounded-p-btn hover:bg-p-bg text-p-base text-p-text-secondary transition-colors">
+          <span className="text-p-text-disabled">&#128196;</span> Dokumentace pro merchanty
         </a>
-        <a href="#" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 text-xs text-gray-700">
-          <span className="text-gray-400">🔗</span> Feed URL (kopírovat)
+        <a href="#" className="flex items-center gap-2 p-2 rounded-p-btn hover:bg-p-bg text-p-base text-p-text-secondary transition-colors">
+          <span className="text-p-text-disabled">&#128279;</span> Feed URL (kopírovat)
         </a>
-        <a href="#" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 text-xs text-gray-700">
-          <span className="text-gray-400">📊</span> Sklik dashboard ↗
+        <a href="#" className="flex items-center gap-2 p-2 rounded-p-btn hover:bg-p-bg text-p-base text-p-text-secondary transition-colors">
+          <span className="text-p-text-disabled">&#128200;</span> Sklik dashboard
         </a>
-        <a href="#" className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 text-xs text-gray-700">
-          <span className="text-gray-400">💬</span> Podpora Seznam.cz
+        <a href="#" className="flex items-center gap-2 p-2 rounded-p-btn hover:bg-p-bg text-p-base text-p-text-secondary transition-colors">
+          <span className="text-p-text-disabled">&#128172;</span> Podpora Seznam.cz
         </a>
       </div>
-    </div>
+    </Section>
 
-    {/* Help footer — BFS requirement */}
-    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
-      <p className="text-xs text-gray-400">
-        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
-      </p>
-    </div>
+    <HelpFooter />
   </div>
 );
 
-// ============================================
-// 4. PRODUCTS PAGE (Sales Channel product publishing)
-// Follows Shopify Sales Channel product management pattern
-// ============================================
+
+/* ═══════════════════════════════════════════════
+   4. PRODUCTS PAGE (Sales Channel product publishing)
+   Follows Shopify Sales Channel product management pattern
+   Uses actual <table> markup with s-table patterns
+   ═══════════════════════════════════════════════ */
+
 const ProductsScreen = ({ onNavigate }) => (
-  <div className="space-y-4 max-w-3xl mx-auto">
+  <div className="space-y-4">
     <div className="flex items-center justify-between">
       <div>
-        <h1 className="text-lg font-semibold text-gray-900">Produkty</h1>
-        <p className="text-xs text-gray-500">Spravujte produkty publikované na Zboží.cz</p>
-        <a href="#" className="text-blue-600 text-xs hover:underline">Otevřít hromadný editor Shopify ↗</a>
+        <h1 className="text-p-heading-lg text-p-text">Produkty</h1>
+        <p className="text-p-base text-p-text-secondary">Spravujte produkty publikované na Zbozi.cz</p>
+        <a href="#" className="text-p-base text-p-interactive hover:underline">Otevřít hromadný editor Shopify</a>
       </div>
-      <button className="bg-gray-900 text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-gray-800">
-        Synchronizovat nyní
-      </button>
+      <Button variant="primary">Synchronizovat nyní</Button>
     </div>
 
-    {/* Filter Tabs */}
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-      <div className="border-b border-gray-200 px-4">
-        <nav className="flex gap-4">
-          <button className="py-3 border-b-2 border-gray-900 text-gray-900 font-medium text-xs">
-            Všechny <span className="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">1,284</span>
+    {/* Product Table Card — s-section with padding=none for table */}
+    <div className="bg-p-surface rounded-p-card shadow-p-card overflow-hidden">
+      {/* Filter Tabs */}
+      <div className="border-b border-p-border px-4">
+        <nav className="flex gap-6">
+          <button className="py-3 border-b-[3px] border-p-text text-p-text font-[550] text-p-tab">
+            Všechny <span className="ml-1 bg-p-badge-neutral text-p-text px-1.5 py-0.5 rounded-p-badge text-p-badge">1 284</span>
           </button>
-          <button className="py-3 text-gray-500 text-xs">
-            Schválené <span className="ml-1 bg-green-100 text-green-600 px-1.5 py-0.5 rounded">1,156</span>
+          <button className="py-3 text-p-text-secondary text-p-tab border-b-[3px] border-transparent">
+            Schválené <span className="ml-1 bg-p-success-surface text-p-text px-1.5 py-0.5 rounded-p-badge text-p-badge">1 156</span>
           </button>
-          <button className="py-3 text-gray-500 text-xs">
-            Čekající <span className="ml-1 bg-yellow-100 text-yellow-600 px-1.5 py-0.5 rounded">42</span>
+          <button className="py-3 text-p-text-secondary text-p-tab border-b-[3px] border-transparent">
+            Cekající <span className="ml-1 bg-p-warning-surface text-p-text px-1.5 py-0.5 rounded-p-badge text-p-badge">42</span>
           </button>
-          <button className="py-3 text-gray-500 text-xs">
-            Chyby <span className="ml-1 bg-red-100 text-red-600 px-1.5 py-0.5 rounded">86</span>
+          <button className="py-3 text-p-text-secondary text-p-tab border-b-[3px] border-transparent">
+            Chyby <span className="ml-1 bg-p-critical-surface text-p-text px-1.5 py-0.5 rounded-p-badge text-p-badge">86</span>
           </button>
-          <button className="py-3 text-gray-500 text-xs">
+          <button className="py-3 text-p-text-secondary text-p-tab border-b-[3px] border-transparent">
             Vyloučené
           </button>
         </nav>
       </div>
 
       {/* Search + Filters */}
-      <div className="p-3 border-b border-gray-100 flex gap-2">
-        <div className="flex-1 relative">
-          <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input type="text" placeholder="Hledat produkty..." className="w-full pl-9 pr-3 py-1.5 border border-gray-300 rounded text-xs" />
+      <div className="p-3 border-b border-p-border-subdued flex gap-2">
+        <div className="flex-1">
+          <TextField placeholder="Hledat produkty..." icon={<SearchIcon />} />
         </div>
-        <select className="border border-gray-300 rounded px-2 py-1.5 text-xs">
-          <option>Kategorie Zboží.cz</option>
-        </select>
-        <select className="border border-gray-300 rounded px-2 py-1.5 text-xs">
-          <option>Stav feedu</option>
-        </select>
+        <Select options={['Kategorie Zbozi.cz']} />
+        <Select options={['Stav feedu']} />
       </div>
 
-      {/* Product Table */}
-      <div className="divide-y divide-gray-100">
-        {/* Product Row 1 — OK */}
-        <div className="p-3 flex items-center gap-3 hover:bg-gray-50">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300" />
-          <div className="w-10 h-10 bg-gray-200 rounded flex-shrink-0"></div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900 truncate">Běžecké boty ProRun X1</div>
-            <div className="text-xs text-gray-500">SKU: BR-X1-42 · EAN: 8594012345678</div>
-          </div>
-          <div className="text-xs text-gray-500 w-28">
-            <div>Elektronika → Boty</div>
-          </div>
-          <div className="w-20 text-right">
-            <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Synced</span>
-          </div>
-        </div>
+      {/* Product Table — actual <table> with s-table styling */}
+      <table className="w-full">
+        <thead>
+          <tr className="bg-p-bg">
+            <th className="text-left px-4 py-3 w-10">
+              <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
+            </th>
+            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">Produkt</th>
+            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">SKU / EAN</th>
+            <th className="text-left px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">Kategorie</th>
+            <th className="text-right px-4 py-3 text-p-th text-p-text-secondary font-[550] uppercase tracking-wide">Stav</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Product Row 1 — OK */}
+          <tr className="border-b border-p-border-subdued hover:bg-p-bg transition-colors">
+            <td className="px-4 py-3">
+              <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
+            </td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-p-bg rounded flex-shrink-0"></div>
+                <span className="text-p-base font-[550] text-p-text">Bezecké boty ProRun X1</span>
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              <div className="text-p-base text-p-text-secondary">BR-X1-42</div>
+              <div className="text-p-badge text-p-text-disabled">8594012345678</div>
+            </td>
+            <td className="px-4 py-3 text-p-base text-p-text-secondary">Elektronika &rarr; Boty</td>
+            <td className="px-4 py-3 text-right">
+              <Badge tone="success">Synced</Badge>
+            </td>
+          </tr>
 
-        {/* Product Row 2 — Warning */}
-        <div className="p-3 flex items-center gap-3 hover:bg-gray-50 bg-yellow-50/50">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300" />
-          <div className="w-10 h-10 bg-gray-200 rounded flex-shrink-0"></div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900 truncate">Sportovní taška Travel Pro</div>
-            <div className="text-xs text-gray-500">SKU: ST-TP-01</div>
-          </div>
-          <div className="text-xs text-yellow-600 w-28">
-            <div>⚠️ Bez kategorie</div>
-          </div>
-          <div className="w-20 text-right">
-            <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-full">Čekající</span>
-          </div>
-        </div>
+          {/* Product Row 2 — Warning */}
+          <tr className="border-b border-p-border-subdued hover:bg-p-bg transition-colors">
+            <td className="px-4 py-3">
+              <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
+            </td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-p-bg rounded flex-shrink-0"></div>
+                <span className="text-p-base font-[550] text-p-text">Sportovní taška Travel Pro</span>
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              <div className="text-p-base text-p-text-secondary">ST-TP-01</div>
+            </td>
+            <td className="px-4 py-3 text-p-base text-p-warning-text">Bez kategorie</td>
+            <td className="px-4 py-3 text-right">
+              <Badge tone="warning">Cekající</Badge>
+            </td>
+          </tr>
 
-        {/* Product Row 3 — Error */}
-        <div className="p-3 flex items-center gap-3 hover:bg-gray-50 bg-red-50/50">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300" />
-          <div className="w-10 h-10 bg-gray-200 rounded flex-shrink-0"></div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900 truncate">Fitness tracker FitBand 3</div>
-            <div className="text-xs text-gray-500">SKU: FB-3-BLK</div>
-          </div>
-          <div className="text-xs text-red-600 w-28">
-            <div>❌ Chybí EAN</div>
-          </div>
-          <div className="w-20 text-right">
-            <span className="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full">Chyba</span>
-          </div>
-        </div>
-        {/* ResourceFeedback detail */}
-        <div className="px-3 pb-3 pt-0 pl-20 bg-red-50/50">
-          <div className="border border-red-200 rounded p-2 bg-white">
-            <p className="text-xs text-red-700 font-medium">Chybějící povinné pole: EAN</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Produkt nemůže být zobrazen na Zboží.cz bez platného EAN kódu. Přidejte EAN v <a href="#" className="text-blue-600 hover:underline">editoru produktu</a>.</p>
-          </div>
-        </div>
+          {/* Product Row 3 — Error */}
+          <tr className="border-b border-p-border-subdued hover:bg-p-bg transition-colors">
+            <td className="px-4 py-3">
+              <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
+            </td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-p-bg rounded flex-shrink-0"></div>
+                <span className="text-p-base font-[550] text-p-text">Fitness tracker FitBand 3</span>
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              <div className="text-p-base text-p-text-secondary">FB-3-BLK</div>
+            </td>
+            <td className="px-4 py-3 text-p-base text-p-critical-text">Chybí EAN</td>
+            <td className="px-4 py-3 text-right">
+              <Badge tone="critical">Chyba</Badge>
+            </td>
+          </tr>
 
-        {/* Product Row 4 — OK */}
-        <div className="p-3 flex items-center gap-3 hover:bg-gray-50">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300" />
-          <div className="w-10 h-10 bg-gray-200 rounded flex-shrink-0"></div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900 truncate">Yoga podložka Premium</div>
-            <div className="text-xs text-gray-500">SKU: YP-180 · EAN: 8594012345999</div>
-          </div>
-          <div className="text-xs text-gray-500 w-28">
-            <div>Sport → Jóga</div>
-          </div>
-          <div className="w-20 text-right">
-            <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Synced</span>
-          </div>
-        </div>
-      </div>
+          {/* ResourceFeedback detail row */}
+          <tr className="border-b border-p-border-subdued">
+            <td></td>
+            <td colSpan="4" className="px-4 pb-3 pt-0">
+              <div className="border border-p-critical-surface rounded-p-btn p-3 bg-p-critical-bg">
+                <p className="text-p-base text-p-critical-text font-[550]">Chybející povinné pole: EAN</p>
+                <p className="text-p-badge text-p-text-secondary mt-0.5">Produkt nemuže být zobrazen na Zbozi.cz bez platného EAN kódu. Přidejte EAN v <a href="#" className="text-p-interactive hover:underline">editoru produktu</a>.</p>
+              </div>
+            </td>
+          </tr>
+
+          {/* Product Row 4 — OK */}
+          <tr className="border-b border-p-border-subdued hover:bg-p-bg transition-colors">
+            <td className="px-4 py-3">
+              <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
+            </td>
+            <td className="px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-p-bg rounded flex-shrink-0"></div>
+                <span className="text-p-base font-[550] text-p-text">Yoga podložka Premium</span>
+              </div>
+            </td>
+            <td className="px-4 py-3">
+              <div className="text-p-base text-p-text-secondary">YP-180</div>
+              <div className="text-p-badge text-p-text-disabled">8594012345999</div>
+            </td>
+            <td className="px-4 py-3 text-p-base text-p-text-secondary">Sport &rarr; Jóga</td>
+            <td className="px-4 py-3 text-right">
+              <Badge tone="success">Synced</Badge>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       {/* Pagination */}
-      <div className="p-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-        <span>Zobrazeno 1–50 z 1,284 produktů</span>
+      <div className="px-4 py-3 border-t border-p-border-subdued flex items-center justify-between text-p-base text-p-text-secondary">
+        <span>Zobrazeno 1-50 z 1 284 produktu</span>
         <div className="flex gap-1">
-          <button className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50">←</button>
-          <button className="px-2 py-1 rounded border border-gray-300 bg-gray-900 text-white">1</button>
-          <button className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50">2</button>
-          <button className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50">3</button>
-          <button className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50">→</button>
+          <Button variant="secondary" size="slim">&larr;</Button>
+          <Button variant="primary" size="slim">1</Button>
+          <Button variant="secondary" size="slim">2</Button>
+          <Button variant="secondary" size="slim">3</Button>
+          <Button variant="secondary" size="slim">&rarr;</Button>
         </div>
       </div>
     </div>
 
     {/* Feed Info */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <h3 className="font-semibold text-sm text-gray-900 mb-2">Feed URL</h3>
+    <Section title="Feed URL">
       <div className="flex items-center gap-2">
-        <code className="bg-gray-100 px-3 py-2 rounded text-xs flex-1 overflow-hidden text-ellipsis">
+        <code className="bg-p-bg px-3 py-2 rounded-p-btn text-p-base flex-1 overflow-hidden text-ellipsis">
           https://app.seznam.cz/feed/abc123xyz/zbozi.xml
         </code>
-        <button className="text-blue-600 text-xs hover:underline flex-shrink-0">Kopírovat</button>
+        <Button variant="plain">Kopírovat</Button>
       </div>
-      <p className="text-xs text-gray-500 mt-2">
-        Tento URL zadejte v administraci Zboží.cz. Feed se automaticky aktualizuje při změně produktů.
+      <p className="text-p-base text-p-text-secondary mt-2">
+        Tento URL zadejte v administraci Zbozi.cz. Feed se automaticky aktualizuje pri zmene produktu.
       </p>
-    </div>
+    </Section>
 
-    {/* Help footer — BFS requirement */}
-    <div className="border-t border-gray-200 pt-3 mt-6 text-center">
-      <p className="text-xs text-gray-400">
-        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
-      </p>
-    </div>
+    <HelpFooter />
   </div>
 );
 
-// ============================================
-// 5. SETTINGS PAGE
-// Organized by module, follows Polaris Page + Card pattern
-// ============================================
+
+/* ═══════════════════════════════════════════════
+   5. SETTINGS PAGE
+   Organized by module, follows Polaris Page + Card pattern
+   ═══════════════════════════════════════════════ */
+
 const SettingsScreen = ({ onNavigate }) => {
   const [showDisconnectModal, setShowDisconnectModal] = React.useState(false);
   return (
-  <div className="space-y-4 max-w-2xl mx-auto">
-    {/* Disconnect Modal — Polaris Modal pattern */}
+  <div className="space-y-4">
+    {/* Disconnect Modal — s-modal */}
     {showDisconnectModal && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h3 className="font-semibold text-sm text-gray-900">Odpojit účet Seznam.cz?</h3>
-            <button onClick={() => setShowDisconnectModal(false)} className="text-gray-400 hover:text-gray-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+        <div className="bg-p-surface rounded-p-modal shadow-xl w-full max-w-[620px] mx-4 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-p-border">
+            <h3 className="text-p-heading-lg text-p-text">Odpojit účet Seznam.cz?</h3>
+            <button onClick={() => setShowDisconnectModal(false)} className="text-p-text-disabled hover:text-p-text transition-colors">
+              <CloseIcon />
             </button>
           </div>
-          <div className="p-4">
-            <p className="text-sm text-gray-700">Tato akce odstraní propojení s vaším účtem Seznam.cz a deaktivuje všechny služby (tracking, feed, recenze).</p>
-            <p className="text-sm text-gray-700 mt-2">Data ve vašem účtu Seznam.cz zůstanou nedotčena.</p>
+          <div className="px-5 py-5">
+            <p className="text-p-base text-p-text">Tato akce odstraní propojení s vaším účtem Seznam.cz a deaktivuje všechny služby (tracking, feed, recenze).</p>
+            <p className="text-p-base text-p-text mt-3">Data ve vašem účtu Seznam.cz zustanou nedotcena.</p>
           </div>
-          <div className="flex justify-end gap-2 p-4 border-t border-gray-200 bg-gray-50">
-            <button onClick={() => setShowDisconnectModal(false)} className="px-4 py-2 rounded-lg text-sm border border-gray-300 hover:bg-gray-100">Zrušit</button>
-            <button className="px-4 py-2 rounded-lg text-sm bg-red-600 text-white hover:bg-red-700 font-medium">Odpojit účet</button>
+          <div className="flex justify-end gap-2 px-5 py-4 border-t border-p-border bg-p-bg">
+            <Button variant="secondary" onClick={() => setShowDisconnectModal(false)}>Zrušit</Button>
+            <Button variant="critical">Odpojit účet</Button>
           </div>
         </div>
       </div>
     )}
-    <h1 className="text-lg font-semibold text-gray-900">Nastavení</h1>
 
-    {/* Contextual Save Bar — App Bridge pattern */}
-    <div className="sticky top-12 z-40 bg-gray-900 text-white p-3 rounded-lg mb-4 flex items-center justify-between shadow-lg">
-      <span className="text-sm">Neuložené změny</span>
+    <h1 className="text-p-heading-lg text-p-text">Nastavení</h1>
+
+    {/* Contextual Save Bar — CSB */}
+    <div className="sticky top-[52px] z-40 bg-p-sidebar text-white p-3 rounded-p-card flex items-center justify-between shadow-lg">
+      <span className="text-p-base text-white font-[450]">Neuložené zmeny</span>
       <div className="flex gap-2">
-        <button className="px-3 py-1.5 rounded text-sm border border-gray-600 hover:bg-gray-800">Zahodit</button>
-        <button className="px-3 py-1.5 rounded text-sm bg-green-600 hover:bg-green-700 font-medium">Uložit</button>
+        <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-transparent border border-[#505050] text-white hover:bg-[#333] transition-colors">Zahodit</button>
+        <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-p-success-text text-white hover:bg-[#006e52] transition-colors">Uložit</button>
       </div>
     </div>
 
     {/* Seznam Account */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <h3 className="font-semibold text-sm text-gray-900 mb-3">Účet Seznam.cz</h3>
+    <Section title="Účet Seznam.cz">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-            <span className="text-red-600 font-bold">S</span>
+          <div className="w-10 h-10 bg-p-critical-surface rounded-full flex items-center justify-center">
+            <span className="text-red-600 font-[650]">S</span>
           </div>
           <div>
-            <a href="#" className="text-blue-600 hover:underline text-sm">obchod@example.cz ↗</a>
-            <div className="flex gap-3 mt-1 text-xs text-gray-500">
-              <span>Sklik: <code className="bg-gray-100 px-1 rounded">987654</code></span>
-              <span>SEM: <code className="bg-gray-100 px-1 rounded">sem_abc...xyz</code></span>
+            <a href="#" className="text-p-interactive hover:underline text-p-base">obchod@example.cz</a>
+            <div className="flex gap-3 mt-1 text-p-base text-p-text-secondary">
+              <span>Sklik: <code className="bg-p-bg px-1 rounded text-p-base">987654</code></span>
+              <span>SEM: <code className="bg-p-bg px-1 rounded text-p-base">sem_abc...xyz</code></span>
             </div>
           </div>
         </div>
-        <button className="border border-red-300 text-red-600 px-3 py-1.5 rounded text-xs hover:bg-red-50"
-          onClick={() => setShowDisconnectModal(true)}>
-          Odpojit účet
-        </button>
+        <Button variant="critical-secondary" onClick={() => setShowDisconnectModal(true)}>Odpojit účet</Button>
       </div>
-    </div>
+    </Section>
 
     {/* Market Selection */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      <h3 className="font-semibold text-sm text-gray-900 mb-3">Trh</h3>
-      <p className="text-xs text-gray-600 mb-3">
+    <Section title="Trh">
+      <p className="text-p-base text-p-text-secondary mb-3">
         Služby Seznam.cz jsou aktivní pouze pro vybrané trhy.
       </p>
       <div className="space-y-2">
-        <label className="flex items-center justify-between p-2 rounded-lg border border-green-200 bg-green-50 cursor-pointer">
+        <label className="flex items-center justify-between p-3 rounded-p-btn border border-p-success-text bg-p-success-bg cursor-pointer">
           <div className="flex items-center gap-2">
-            <input type="checkbox" checked className="w-4 h-4 rounded border-gray-300 text-gray-900" readOnly />
-            <span className="text-sm">🇨🇿 Česká republika</span>
+            <input type="checkbox" checked className="w-4 h-4 rounded border-p-text-disabled accent-p-btn-primary" readOnly />
+            <span className="text-p-base text-p-text">Ceská republika</span>
           </div>
-          <span className="text-xs text-gray-500">CZK</span>
+          <span className="text-p-base text-p-text-secondary">CZK</span>
         </label>
-        <label className="flex items-center justify-between p-2 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50">
+        <label className="flex items-center justify-between p-3 rounded-p-btn border border-p-border cursor-pointer hover:bg-p-bg transition-colors">
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-gray-900" />
-            <span className="text-sm">🇸🇰 Slovensko</span>
+            <input type="checkbox" className="w-4 h-4 rounded border-p-text-disabled" />
+            <span className="text-p-base text-p-text">Slovensko</span>
           </div>
-          <span className="text-xs text-gray-500">EUR</span>
+          <span className="text-p-base text-p-text-secondary">EUR</span>
         </label>
       </div>
-    </div>
+    </Section>
 
     {/* SEM Settings */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <Section>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm text-gray-900">Seznam Event Measurement</h3>
-          <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Aktivní</span>
+          <h2 className="text-p-heading text-p-text">Seznam Event Measurement</h2>
+          <Badge tone="success">Aktivní</Badge>
         </div>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" checked className="sr-only peer" readOnly />
-          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
-        </label>
+        <Toggle checked={true} />
       </div>
 
       {/* Tracking mode */}
-      <div className="border border-gray-200 rounded-lg p-3 mb-3">
-        <div className="text-xs font-medium text-gray-700 mb-2">Režim trackingu</div>
+      <div className="border border-p-border rounded-p-btn p-3 mb-3">
+        <div className="text-p-heading text-p-text mb-2">Režim trackingu</div>
         <div className="space-y-2">
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="tracking" checked className="w-3.5 h-3.5 text-gray-900" readOnly />
+            <input type="radio" name="tracking" checked className="w-3.5 h-3.5 accent-p-btn-primary" readOnly />
             <div>
-              <span className="text-xs font-medium text-gray-900">Frontend + Server-Side (doporučeno)</span>
-              <p className="text-[10px] text-gray-500">Web Pixel + S2S webhooky s automatickou deduplikací na order_id</p>
+              <span className="text-p-base font-[550] text-p-text">Frontend + Server-Side (doporuceno)</span>
+              <p className="text-p-badge text-p-text-secondary">Web Pixel + S2S webhooky s automatickou deduplikací na order_id</p>
             </div>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="tracking" className="w-3.5 h-3.5 text-gray-900" />
+            <input type="radio" name="tracking" className="w-3.5 h-3.5 accent-p-btn-primary" />
             <div>
-              <span className="text-xs font-medium text-gray-900">Pouze Frontend</span>
-              <p className="text-[10px] text-gray-500">Pouze Web Pixel — nižší spolehlivost (ad blockery)</p>
+              <span className="text-p-base font-[550] text-p-text">Pouze Frontend</span>
+              <p className="text-p-badge text-p-text-secondary">Pouze Web Pixel — nižší spolehlivost (ad blockery)</p>
             </div>
           </label>
         </div>
       </div>
 
       {/* Event toggles */}
-      <div className="border border-gray-200 rounded-lg p-3 mb-3">
-        <div className="text-xs font-medium text-gray-700 mb-2">Sledované události (Web Pixel)</div>
+      <div className="border border-p-border rounded-p-btn p-3 mb-3">
+        <div className="text-p-heading text-p-text mb-2">Sledované události (Web Pixel)</div>
         <div className="space-y-1.5">
           {[
             { name: 'page_viewed', label: 'Zobrazení stránky', on: true, priority: 'High' },
             { name: 'product_viewed', label: 'Zobrazení produktu', on: true, priority: 'High' },
             { name: 'product_added_to_cart', label: 'Přidání do košíku', on: true, priority: 'High' },
             { name: 'checkout_started', label: 'Zahájení checkoutu', on: true, priority: 'Medium' },
-            { name: 'checkout_completed', label: 'Dokončení nákupu', on: true, priority: 'Critical' },
+            { name: 'checkout_completed', label: 'Dokoncení nákupu', on: true, priority: 'Critical' },
             { name: 'collection_viewed', label: 'Zobrazení kolekce', on: true, priority: 'Low' },
             { name: 'search_submitted', label: 'Vyhledávání', on: true, priority: 'Low' },
             { name: 'cart_viewed', label: 'Zobrazení košíku', on: true, priority: 'Low' },
@@ -956,185 +1132,159 @@ const SettingsScreen = ({ onNavigate }) => {
           ].map((event) => (
             <label key={event.name} className="flex items-center justify-between py-1 cursor-pointer group">
               <div className="flex items-center gap-2">
-                <input type="checkbox" checked={event.on} className="w-3.5 h-3.5 rounded border-gray-300 text-gray-900" readOnly />
-                <span className="text-xs text-gray-700">{event.label}</span>
-                {event.priority === 'Critical' && <span className="bg-orange-100 text-orange-700 text-[9px] px-1 rounded">Critical</span>}
-                {event.priority === 'High' && <span className="bg-orange-100 text-orange-600 text-[9px] px-1 rounded">High</span>}
+                <input type="checkbox" checked={event.on} className="w-3.5 h-3.5 rounded border-p-text-disabled accent-p-btn-primary" readOnly />
+                <span className="text-p-base text-p-text">{event.label}</span>
+                {event.priority === 'Critical' && <Badge tone="critical">Critical</Badge>}
+                {event.priority === 'High' && <Badge tone="warning">High</Badge>}
               </div>
-              <code className="text-[10px] text-gray-400 group-hover:text-gray-600">{event.name}</code>
+              <code className="text-p-badge text-p-text-disabled group-hover:text-p-text-secondary transition-colors">{event.name}</code>
             </label>
           ))}
         </div>
       </div>
 
       {/* Consent */}
-      <div className="border border-gray-200 rounded-lg p-3">
+      <div className="border border-p-border rounded-p-btn p-3">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs font-medium text-gray-700">Consent mode</div>
-            <p className="text-[10px] text-gray-500">Respektuje Shopify Consent API. Tracking se aktivuje až po souhlasu uživatele.</p>
+            <div className="text-p-heading text-p-text">Consent mode</div>
+            <p className="text-p-badge text-p-text-secondary">Respektuje Shopify Consent API. Tracking se aktivuje až po souhlasu uživatele.</p>
           </div>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" checked className="sr-only peer" readOnly />
-            <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
-          </label>
+          <Toggle checked={true} />
         </div>
       </div>
-    </div>
+    </Section>
 
     {/* Feed Settings */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <Section>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm text-gray-900">Produktový feed</h3>
-          <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Aktivní</span>
+          <h2 className="text-p-heading text-p-text">Produktový feed</h2>
+          <Badge tone="success">Aktivní</Badge>
         </div>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" checked className="sr-only peer" readOnly />
-          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
-        </label>
+        <Toggle checked={true} />
       </div>
 
       <div className="space-y-3">
         {/* Category Mapping */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center justify-between mb-1">
-            <div className="text-xs font-medium text-gray-700">Mapování kategorií</div>
-            <button className="text-blue-600 text-xs hover:underline">Upravit →</button>
+            <div className="text-p-heading text-p-text">Mapování kategorií</div>
+            <Button variant="plain">Upravit</Button>
           </div>
-          <p className="text-[10px] text-gray-500">Shopify product types → Zboží.cz kategorie</p>
+          <p className="text-p-badge text-p-text-secondary">Shopify product types &rarr; Zbozi.cz kategorie</p>
           <div className="flex flex-wrap gap-1 mt-2">
-            <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">✓ 12 kategorií namapováno</span>
-            <span className="bg-yellow-100 text-yellow-700 text-[10px] px-1.5 py-0.5 rounded">⚠ 3 bez mapování</span>
+            <Badge tone="success">12 kategorií namapováno</Badge>
+            <Badge tone="warning">3 bez mapování</Badge>
           </div>
         </div>
 
         {/* Metafield Mapping */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center justify-between mb-1">
-            <div className="text-xs font-medium text-gray-700">Párování metafieldů</div>
-            <button className="text-blue-600 text-xs hover:underline">Upravit →</button>
+            <div className="text-p-heading text-p-text">Párování metafieldu</div>
+            <Button variant="plain">Upravit</Button>
           </div>
           <div className="flex flex-wrap gap-1 mt-1">
-            <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">✓ EAN → product.barcode</span>
-            <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">✓ Výrobce → product.vendor</span>
+            <Badge tone="success">EAN &rarr; product.barcode</Badge>
+            <Badge tone="success">Výrobce &rarr; product.vendor</Badge>
           </div>
         </div>
 
         {/* Shipping Mapping */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center justify-between mb-1">
-            <div className="text-xs font-medium text-gray-700">Párování dopravy</div>
-            <button className="text-blue-600 text-xs hover:underline">Upravit →</button>
+            <div className="text-p-heading text-p-text">Párování dopravy</div>
+            <Button variant="plain">Upravit</Button>
           </div>
           <div className="flex flex-wrap gap-1 mt-1">
-            <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">✓ PPL → Kurýr</span>
-            <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">✓ Zásilkovna → Výdejní místo</span>
-            <span className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded">✓ Česká pošta → Pošta</span>
+            <Badge tone="success">PPL &rarr; Kurýr</Badge>
+            <Badge tone="success">Zásilkovna &rarr; Výdejní místo</Badge>
+            <Badge tone="success">Ceská pošta &rarr; Pošta</Badge>
           </div>
         </div>
 
         {/* Feed URL */}
-        <div className="border border-gray-200 rounded-lg p-3">
-          <div className="text-xs font-medium text-gray-700 mb-1">Feed URL</div>
+        <div className="border border-p-border rounded-p-btn p-3">
+          <div className="text-p-heading text-p-text mb-1">Feed URL</div>
           <div className="flex items-center gap-2">
-            <code className="bg-gray-100 px-2 py-1 rounded text-[10px] flex-1 overflow-hidden text-ellipsis">
+            <code className="bg-p-bg px-2 py-1 rounded-p-btn text-p-badge flex-1 overflow-hidden text-ellipsis">
               https://app.seznam.cz/feed/abc123xyz/zbozi.xml
             </code>
-            <button className="text-blue-600 text-xs hover:underline flex-shrink-0">Kopírovat</button>
+            <Button variant="plain">Kopírovat</Button>
           </div>
         </div>
 
         {/* Sync interval */}
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-xs font-medium text-gray-700">Synchronizace metafieldů</div>
-              <p className="text-[10px] text-gray-500">Metafieldy nemají webhook — pravidelná kontrola změn</p>
+              <div className="text-p-heading text-p-text">Synchronizace metafieldu</div>
+              <p className="text-p-badge text-p-text-secondary">Metafieldy nemají webhook — pravidelná kontrola zmen</p>
             </div>
-            <select className="border border-gray-300 rounded px-2 py-1 text-xs">
-              <option>Každých 30 min</option>
-              <option>Každou hodinu</option>
-              <option>Každé 4 hodiny</option>
-            </select>
+            <Select options={['Každých 30 min', 'Každou hodinu', 'Každé 4 hodiny']} className="py-1 px-2 text-p-badge" />
           </div>
         </div>
       </div>
-    </div>
+    </Section>
 
     {/* Review Settings */}
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <Section>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm text-gray-900">Recenze Zboží.cz</h3>
-          <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">Neaktivní</span>
+          <h2 className="text-p-heading text-p-text">Recenze Zbozi.cz</h2>
+          <Badge tone="neutral">Neaktivní</Badge>
         </div>
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" className="sr-only peer" />
-          <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
-        </label>
+        <Toggle checked={false} />
       </div>
 
       <div className="space-y-3 opacity-50">
-        <div className="border border-gray-200 rounded-lg p-3">
-          <div className="text-xs font-medium text-gray-700 mb-2">Způsob sběru souhlasu</div>
+        <div className="border border-p-border rounded-p-btn p-3">
+          <div className="text-p-heading text-p-text mb-2">Zpusob sberu souhlasu</div>
           <div className="space-y-1.5">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="review_method" className="w-3.5 h-3.5 text-gray-900" />
+              <input type="radio" name="review_method" className="w-3.5 h-3.5 accent-p-btn-primary" />
               <div>
-                <span className="text-xs font-medium text-gray-900">Checkout UI Extension</span>
-                <span className="text-[10px] text-purple-600 ml-1">(Shopify Plus)</span>
+                <span className="text-p-base font-[550] text-p-text">Checkout UI Extension</span>
+                <span className="text-p-badge text-[#7C3AED] ml-1">(Shopify Plus)</span>
               </div>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="review_method" checked className="w-3.5 h-3.5 text-gray-900" readOnly />
+              <input type="radio" name="review_method" checked className="w-3.5 h-3.5 accent-p-btn-primary" readOnly />
               <div>
-                <span className="text-xs font-medium text-gray-900">Cart App Block</span>
-                <span className="text-[10px] text-gray-500 ml-1">(všechny plány)</span>
+                <span className="text-p-base font-[550] text-p-text">Cart App Block</span>
+                <span className="text-p-badge text-p-text-secondary ml-1">(všechny plány)</span>
               </div>
             </label>
           </div>
         </div>
 
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center justify-between">
-            <div className="text-xs font-medium text-gray-700">Jazyk recenzí</div>
-            <select className="border border-gray-300 rounded px-2 py-1 text-xs">
-              <option>🇨🇿 Čeština</option>
-              <option>🇸🇰 Slovenština</option>
-            </select>
+            <div className="text-p-heading text-p-text">Jazyk recenzí</div>
+            <Select options={['Ceština', 'Slovenština']} className="py-1 px-2 text-p-badge" />
           </div>
         </div>
 
-        <div className="border border-gray-200 rounded-lg p-3">
+        <div className="border border-p-border rounded-p-btn p-3">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-xs font-medium text-gray-700">Odeslání po doručení</div>
-              <p className="text-[10px] text-gray-500">Počet dní po fulfillmentu objednávky</p>
+              <div className="text-p-heading text-p-text">Odeslání po dorucení</div>
+              <p className="text-p-badge text-p-text-secondary">Pocet dní po fulfillmentu objednávky</p>
             </div>
-            <select className="border border-gray-300 rounded px-2 py-1 text-xs">
-              <option>3 dny</option>
-              <option>5 dní</option>
-              <option>7 dní</option>
-              <option>14 dní</option>
-            </select>
+            <Select options={['3 dny', '5 dní', '7 dní', '14 dní']} className="py-1 px-2 text-p-badge" />
           </div>
         </div>
       </div>
-    </div>
+    </Section>
 
-    {/* Help footer — BFS requirement */}
-    <div className="border-t border-gray-200 pt-3 mt-6 text-center pb-8">
-      <p className="text-xs text-gray-400">
-        Potřebujete pomoc? <a href="#" className="text-blue-600 hover:underline">Dokumentace</a> · <a href="#" className="text-blue-600 hover:underline">Podpora Seznam.cz</a> · <a href="#" className="text-blue-600 hover:underline">Kontaktujte nás</a>
-      </p>
-    </div>
+    <HelpFooter />
   </div>
 );};
 
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<SeznamAppWireframesV2 />);
+    root.render(<SeznamAppWireframes />);
   </script>
 </body>
 </html>
