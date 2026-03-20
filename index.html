@@ -332,17 +332,17 @@ const IntroductionScreen = ({ onNavigate }) => (
   <div className="space-y-4">
     {/* Hero Section */}
     <div className="bg-p-surface rounded-p-card shadow-p-card overflow-hidden">
-      <div className="bg-gradient-to-r from-[#1a1a1a] to-[#333] p-6 text-white">
+      <div className="bg-gradient-to-r from-[#CC0000] to-[#E00000] p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 bg-white rounded-p-card flex items-center justify-center shadow-sm">
             <span className="text-red-600 text-xl font-[650]">S</span>
           </div>
           <div>
             <h1 className="text-p-heading-lg text-white">Seznam.cz</h1>
-            <span className="text-p-base text-[#b5b5b5]">Sklik + Zbozi.cz</span>
+            <span className="text-p-base text-red-200">Sklik + Zbozi.cz</span>
           </div>
         </div>
-        <p className="text-p-base text-[#d0d0d0] leading-relaxed">
+        <p className="text-p-base text-red-100 leading-relaxed">
           Budte tam, kde zákazníci skutecne hledají — ve <strong className="text-white">vyhledávání Seznam.cz</strong>,
           na <strong className="text-white">nejnavštevovanejších ceských webech</strong> nebo
           na <strong className="text-white">srovnávaci Zbozi.cz</strong>, který týdne navštíví témer milion nakupujících.
@@ -1044,7 +1044,7 @@ const SettingsScreen = ({ onNavigate }) => {
       <span className="text-p-base text-white font-[450]">Neuložené zmeny</span>
       <div className="flex gap-2">
         <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-transparent border border-[#505050] text-white hover:bg-[#333] transition-colors">Zahodit</button>
-        <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-white text-p-text hover:bg-p-bg transition-colors">Uložit</button>
+        <button className="px-3 py-[6px] rounded-p-btn text-p-btn font-[550] bg-p-success-text text-white hover:bg-[#006e52] transition-colors">Uložit</button>
       </div>
     </div>
 
